@@ -41,7 +41,7 @@ NetHedge operates on a three-layer architecture ensuring separation of concerns 
 
 ## 4\. Market Lifecycle & State Machine
 
-NetHedge enforces a strict **Monotonic State Machine**. Markets move strictly forward, ensuring that once a market is finalized, funds are distributed deterministically, and history cannot be rewritten[cite: 15, 16].
+NetHedge enforces a strict **Monotonic State Machine**. Markets move strictly forward, ensuring that once a market is finalized, funds are distributed deterministically, and history cannot be rewritten.
 
 ```mermaid
 stateDiagram-v2
@@ -81,7 +81,7 @@ We designed the protocol around strict mathematical invariants to ensure user sa
 
 ### 🚀 Live Demo
 
-You can access the live application here: **[Link to Vercel Deployment]**
+You can access the live application here: https://net-hedge-nextjs.vercel.app
 
 ### ✅ Verified Contracts
 
