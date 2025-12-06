@@ -1,80 +1,143 @@
-# 🏗 Scaffold-ETH 2
+# NetHedge
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+<p align="center"\>
+<img src="./packages/nextjs/public/logo.jpg" alt="NetHedge Logo" width="200"\>
+</p\>
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+<h4 align="center"\>
+Decentralized Uptime Prediction Markets: Hedge against website downtime or speculate on infrastructure reliability with fair, tamper-proof settlement.
+</h4\>
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+<p align="center"\>
+Built with 🏗 Scaffold-ETH 2
+</p\>
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+-----
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## 1\. The Problem
 
-## Requirements
+In the modern digital economy, downtime is expensive.
 
-Before you begin, you need to install the following tools:
+  * **SaaS Companies** lose revenue and trust when their infrastructure fails.
+  * **Traders & Competitors** have no transparent way to speculate on reliability.
+  * **Traditional SLAs** are opaque, slow, and often managed by the service provider themselves.
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+## 2\. Our Solution
 
-## Quickstart
+**NetHedge** is a blockchain-based prediction market platform that allows users to create binary markets betting on whether a specific website will maintain **≥99% uptime** during a monitoring period.
 
-To get started with Scaffold-ETH 2, follow the steps below:
+  * **Permissionless:** Anyone can create a market for any URL (1 min - 30 days monitoring).
+  * **Fair Ordering:** Uses **Themis-style** batching and **Hash Commit-Reveal** schemes to prevent front-running and MEV attacks.
+  * **Trustless Settlement:** Markets are resolved by a consensus of bonded oracles with a dispute window, ensuring outcomes are determined by reality, not a central admin.
 
-1. Install dependencies if it was skipped in CLI:
+## 3\. System Architecture
 
+NetHedge operates on a three-layer architecture ensuring separation of concerns between the UI, the Blockchain logic, and Off-chain data monitoring.
+
+
+<p align="center"\>
+<img src="./packages/nextjs/public/arch.png.jpg" alt="Arch" width="1000"\>
+</p\>
+
+## 4\. Market Lifecycle & State Machine
+
+NetHedge enforces a strict **Monotonic State Machine**. Markets move strictly forward, ensuring that once a market is finalized, funds are distributed deterministically, and history cannot be rewritten[cite: 15, 16].
+
+```mermaid
+stateDiagram-v2
+    [*] --> Created
+    Created --> Open: User creates market
+    Open --> Locked: Betting ends
+    Locked --> Dispute: Oracle reports result
+    
+    state Dispute {
+        [*] --> ChallengeWindow
+        ChallengeWindow --> Finalized: No dispute
+        ChallengeWindow --> Slashed: Fraud proven
+    }
+
+    Dispute --> Finalized
+    Finalized --> [*]: Payouts Claimed
 ```
-cd my-dapp-example
-yarn install
-```
 
-2. Run a local network in the first terminal:
+## 5\. Key Invariants & Guarantees
 
-```
-yarn chain
-```
+We designed the protocol around strict mathematical invariants to ensure user safety:
 
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
+1.  **Solvency (No Orphaned Funds):** `Assets >= Liabilities`. The contract balance always equals the sum of potential payouts plus fees. No funds can ever be lost or locked forever.
+2.  **Settlement Idempotence:** Payouts execute exactly **ONCE**. Even if a winner calls the claim function multiple times, they are paid only the first time.
+3.  **Strict Temporal Order:** Betting *must* close before Monitoring begins. No retroactive bets are allowed.
+4.  **Fail-Safe Atomic Refunds:** If a market is cancelled (due to oracle timeout or liveness failure), users are mathematically guaranteed a 100% refund of their principal.
 
-3. On a second terminal, deploy the test contract:
+## 6\. Threat Model & Defenses
 
-```
-yarn deploy
-```
+| Threat Vector | Defense Mechanism |
+| :--- | :--- |
+| **MEV / Front-running** | **Fair Ordering Architecture:** We use a Hash Commit-Reveal scheme. Users submit a hash of their vote, which is ordered before the vote is revealed, making it impossible for validators to censor or front-run based on content. |
+| **Oracle Manipulation** | **Bonded Consensus:** Reporters must stake value. If they report false uptime (e.g., claiming UP when site is DOWN), they are slashed during the dispute window. |
+| **Chain Reorgs** | **State Machine Safety:** Our monotonic state transitions and idempotent payout logic ensure that even if the chain reorganizes, double-spending is impossible. |
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
+## 7\. Live Deployment
 
-4. On a third terminal, start your NextJS app:
+### 🚀 Live Demo
 
-```
-yarn start
-```
+You can access the live application here: **[Link to Vercel Deployment]**
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+### ✅ Verified Contracts
 
-Run smart contract test with `yarn hardhat:test`
+The smart contracts are deployed and verified on the **Sepolia Testnet**.
 
-- Edit your smart contracts in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/hardhat/deploy`
+| Contract | Etherscan Link |
+| :--- | :--- |
+| **UptimeMarket.sol** | https://sepolia.etherscan.io/address/0x1e15fbd8e40609f95788a166aec4b895bfb2cffe |
+| **UptimeOracle.sol** | https://sepolia.etherscan.io/address/0xe5ee55d669687b242294ef1d3963dbeeae8722c6 |
 
+<p align="center"\>
+<img src="./packages/nextjs/public/ether.jpg" alt="Etherscan Verification Screenshot" width="600"\>
+<br>
+<em\>Fig: Verified Contract Interaction on Etherscan</em\>
+</p\>
 
-## Documentation
+## 8\. Tech Stack
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+  * **Framework:** 🏗 Scaffold-ETH 2
+  * **Smart Contracts:** Solidity 0.8.20
+  * **Frontend:** Next.js 14, TypeScript, Tailwind CSS
+  * **Blockchain Interaction:** Wagmi, Viem, RainbowKit
+  * **Testing:** Hardhat (44 test cases, 100% passing)
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+## 9\. Getting Started
 
-## Contributing to Scaffold-ETH 2
+To run NetHedge locally, follow these steps:
 
-We welcome contributions to Scaffold-ETH 2!
+1.  **Install dependencies:**
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+    ```bash
+    yarn install
+    ```
+
+2.  **Start a local network:**
+
+    ```bash
+    yarn chain
+    ```
+
+3.  **Deploy the contracts:**
+
+    ```bash
+    yarn deploy
+    ```
+
+4.  **Start the frontend:**
+
+    ```bash
+    yarn start
+    ```
+
+Visit `http://localhost:3000` to interact with the decentralized prediction market.
+
+## 10\. Team
+
+  * **Pratyaksh Dhairya Panwar**
+  * **Kushagra Gupta**
+  * *IIT Delhi*
