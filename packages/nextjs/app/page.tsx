@@ -1,78 +1,103 @@
 "use client";
 
 import Link from "next/link";
-import { Address } from "@scaffold-ui/components";
 import type { NextPage } from "next";
-import { hardhat } from "viem/chains";
 import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth";
+import { ChartBarIcon, ClockIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const { targetNetwork } = useTargetNetwork();
+
+  const { data: totalMarkets } = useScaffoldReadContract({
+    contractName: "UptimeMarket",
+    functionName: "getTotalMarkets",
+  });
 
   return (
     <>
       <div className="flex items-center flex-col grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address
-              address={connectedAddress}
-              chain={targetNetwork}
-              blockExplorerAddressLink={
-                targetNetwork.id === hardhat.id ? `/blockexplorer/address/${connectedAddress}` : undefined
-              }
-            />
+        {/* Hero Section */}
+        <div className="px-5 text-center max-w-4xl">
+          <h1 className="text-6xl font-bold mb-4">NetHedge</h1>
+          <p className="text-2xl mb-2 text-base-content/80">Website Uptime Prediction Markets</p>
+          <p className="text-lg text-base-content/60 mb-8">
+            Bet on whether websites will stay online. Powered by decentralized oracles and smart contracts.
+          </p>
+
+          <div className="flex gap-4 justify-center mb-12">
+            <Link href="/markets" className="btn btn-primary btn-lg">
+              Browse Markets
+            </Link>
+            <Link href="/markets/create" className="btn btn-outline btn-lg">
+              Create Market
+            </Link>
           </div>
 
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
+          {/* Stats */}
+          <div className="stats shadow mb-12">
+            <div className="stat">
+              <div className="stat-figure text-primary">
+                <ChartBarIcon className="h-8 w-8" />
+              </div>
+              <div className="stat-title">Total Markets</div>
+              <div className="stat-value text-primary">{totalMarkets?.toString() || "0"}</div>
+            </div>
+          </div>
         </div>
 
+        {/* Features */}
         <div className="grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col md:flex-row">
+          <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
+          <div className="flex justify-center items-center gap-8 flex-col md:flex-row max-w-6xl mx-auto">
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
+              <ChartBarIcon className="h-12 w-12 mb-4 text-primary" />
+              <h3 className="text-xl font-bold mb-2">1. Choose a Market</h3>
+              <p className="text-base-content/70">
+                Browse active uptime prediction markets for popular websites or create your own.
               </p>
             </div>
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
+              <ClockIcon className="h-12 w-12 mb-4 text-primary" />
+              <h3 className="text-xl font-bold mb-2">2. Place Your Bet</h3>
+              <p className="text-base-content/70">
+                Bet YES if you think the site will maintain 99%+ uptime, or NO if you think it will go down.
+              </p>
+            </div>
+            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+              <TrophyIcon className="h-12 w-12 mb-4 text-primary" />
+              <h3 className="text-xl font-bold mb-2">3. Win Rewards</h3>
+              <p className="text-base-content/70">
+                When the market resolves, winners share the pool proportionally minus a 2% platform fee.
               </p>
             </div>
           </div>
+
+          {/* Quick Links */}
+          <div className="mt-12 text-center">
+            <h3 className="text-xl font-bold mb-4">Developer Tools</h3>
+            <div className="flex gap-4 justify-center">
+              <Link href="/debug" className="link link-primary">
+                Debug Contracts
+              </Link>
+              <span>•</span>
+              <Link href="/blockexplorer" className="link link-primary">
+                Block Explorer
+              </Link>
+            </div>
+          </div>
         </div>
+
+        {/* CTA */}
+        {!connectedAddress && (
+          <div className="w-full bg-primary text-primary-content py-8 px-4">
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-2xl font-bold mb-2">Ready to Start?</h2>
+              <p className="mb-4">Connect your wallet to participate in uptime prediction markets</p>
+              <button className="btn btn-accent btn-lg">Connect Wallet</button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

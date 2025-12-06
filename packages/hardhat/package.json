@@ -19,7 +19,8 @@
     "lint": "eslint",
     "lint-staged": "eslint",
     "test": "REPORT_GAS=true hardhat test --network hardhat",
-    "verify": "hardhat etherscan-verify"
+    "verify": "hardhat etherscan-verify",
+    "monitor": "hardhat run scripts/oracle-monitor.ts --network localhost"
   },
   "dependencies": {
     "@inquirer/password": "^4.0.2",

@@ -19,6 +19,7 @@
     "format": "yarn next:format && yarn hardhat:format",
     "generate": "yarn account:generate",
     "hardhat:account": "yarn workspace @se-2/hardhat account",
+    "monitor": "yarn workspace @se-2/hardhat monitor",
     "hardhat:chain": "yarn workspace @se-2/hardhat chain",
     "hardhat:check-types": "yarn workspace @se-2/hardhat check-types",
     "hardhat:clean": "yarn workspace @se-2/hardhat clean",
