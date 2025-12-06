@@ -1,0 +1,1726 @@
+{
+  "address": "0x1e15fBD8e40609F95788a166AEc4b895bfB2cfFE",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum UptimeMarket.Position",
+          "name": "position",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidPlaced",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "websiteUrl",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "bettingEndTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "monitoringEndTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "resolutionTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "MarketCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "outcome",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "uptimePercentage",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "yesPool",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "noPool",
+          "type": "uint256"
+        }
+      ],
+      "name": "MarketResolved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum UptimeMarket.MarketStatus",
+          "name": "oldStatus",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum UptimeMarket.MarketStatus",
+          "name": "newStatus",
+          "type": "uint8"
+        }
+      ],
+      "name": "MarketStatusChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "oldOracle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOracle",
+          "type": "address"
+        }
+      ],
+      "name": "OracleAddressUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "oldFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "PlatformFeeUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isUp",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "responseTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "UptimeCheckAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "platformFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "WinningsClaimed",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "MINIMUM_BET",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "UPTIME_THRESHOLD",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isUp",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_responseTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "addUptimeCheck",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum UptimeMarket.Position",
+          "name": "_position",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculatePotentialWinnings",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "grossWinnings",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "netWinnings",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelMarket",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "claimRefund",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "claimWinnings",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "closeMarket",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_websiteUrl",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_bettingDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_monitoringDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "createMarket",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "emergencyWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getMarket",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "websiteUrl",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bettingEndTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "monitoringEndTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "resolutionTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "yesPool",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "noPool",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum UptimeMarket.MarketStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "outcome",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "uptimePercentage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalBids",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct UptimeMarket.Market",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getMarketBidders",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getOdds",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "yesOdds",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "noOdds",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTotalMarkets",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getUptimeChecks",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isUp",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseTime",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct UptimeMarket.UptimeCheck[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserBids",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "marketId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "bidder",
+              "type": "address"
+            },
+            {
+              "internalType": "enum UptimeMarket.Position",
+              "name": "position",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "claimed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct UptimeMarket.Bid[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserParticipatedMarkets",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "hasUserBid",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "marketBidders",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "marketCounter",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "marketUptimeChecks",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isUp",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "responseTime",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "markets",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "websiteUrl",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "bettingEndTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "monitoringEndTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "resolutionTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "yesPool",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "noPool",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum UptimeMarket.MarketStatus",
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bool",
+          "name": "outcome",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "uptimePercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalBids",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "oracleAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum UptimeMarket.Position",
+          "name": "_position",
+          "type": "uint8"
+        }
+      ],
+      "name": "placeBid",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "platformFeePercentage",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_marketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_uptimePercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "resolveMarket",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_oracle",
+          "type": "address"
+        }
+      ],
+      "name": "setOracleAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_feePercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPlatformFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "userBids",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "marketId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        },
+        {
+          "internalType": "enum UptimeMarket.Position",
+          "name": "position",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "claimed",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "userParticipatedMarkets",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x6ef2727695c699cdf7d435f81d100e9b98e83e9248d7d6749d2d744c40144498",
+  "receipt": {
+    "to": null,
+    "from": "0x6Cb9A1CB58A9717D79e6a96348E71AE012BD06C9",
+    "contractAddress": "0x1e15fBD8e40609F95788a166AEc4b895bfB2cfFE",
+    "transactionIndex": 45,
+    "gasUsed": "2747652",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000001000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000002000000000020000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000020020000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x73dbb4b0274c811ef4c257429528f2e911316c59bfae068b58def9177f4947f9",
+    "transactionHash": "0x6ef2727695c699cdf7d435f81d100e9b98e83e9248d7d6749d2d744c40144498",
+    "logs": [
+      {
+        "transactionIndex": 45,
+        "blockNumber": 9778757,
+        "transactionHash": "0x6ef2727695c699cdf7d435f81d100e9b98e83e9248d7d6749d2d744c40144498",
+        "address": "0x1e15fBD8e40609F95788a166AEc4b895bfB2cfFE",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000006cb9a1cb58a9717d79e6a96348e71ae012bd06c9"
+        ],
+        "data": "0x",
+        "logIndex": 58,
+        "blockHash": "0x73dbb4b0274c811ef4c257429528f2e911316c59bfae068b58def9177f4947f9"
+      }
+    ],
+    "blockNumber": 9778757,
+    "cumulativeGasUsed": "9928396",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x6Cb9A1CB58A9717D79e6a96348E71AE012BD06C9"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "74686d2d7e130e355db259f9aae868d7",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyGuardReentrantCall\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"bidder\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"enum UptimeMarket.Position\",\"name\":\"position\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"BidPlaced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"websiteUrl\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"startTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"bettingEndTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"monitoringEndTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"resolutionTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"MarketCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"outcome\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"uptimePercentage\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"yesPool\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"noPool\",\"type\":\"uint256\"}],\"name\":\"MarketResolved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"enum UptimeMarket.MarketStatus\",\"name\":\"oldStatus\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"enum UptimeMarket.MarketStatus\",\"name\":\"newStatus\",\"type\":\"uint8\"}],\"name\":\"MarketStatusChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldOracle\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOracle\",\"type\":\"address\"}],\"name\":\"OracleAddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"oldFee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newFee\",\"type\":\"uint256\"}],\"name\":\"PlatformFeeUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isUp\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"responseTime\",\"type\":\"uint256\"}],\"name\":\"UptimeCheckAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"platformFee\",\"type\":\"uint256\"}],\"name\":\"WinningsClaimed\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"MINIMUM_BET\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"UPTIME_THRESHOLD\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_isUp\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"_responseTime\",\"type\":\"uint256\"}],\"name\":\"addUptimeCheck\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"},{\"internalType\":\"enum UptimeMarket.Position\",\"name\":\"_position\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"calculatePotentialWinnings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"grossWinnings\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"netWinnings\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"cancelMarket\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"claimRefund\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"claimWinnings\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"closeMarket\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_websiteUrl\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_bettingDuration\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_monitoringDuration\",\"type\":\"uint256\"}],\"name\":\"createMarket\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"emergencyWithdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"getMarket\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"websiteUrl\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"startTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"bettingEndTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"monitoringEndTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"resolutionTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"yesPool\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"noPool\",\"type\":\"uint256\"},{\"internalType\":\"enum UptimeMarket.MarketStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"outcome\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"uptimePercentage\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalBids\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"internalType\":\"struct UptimeMarket.Market\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"getMarketBidders\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"getOdds\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"yesOdds\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"noOdds\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalMarkets\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"}],\"name\":\"getUptimeChecks\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isUp\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"responseTime\",\"type\":\"uint256\"}],\"internalType\":\"struct UptimeMarket.UptimeCheck[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"getUserBids\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"bidder\",\"type\":\"address\"},{\"internalType\":\"enum UptimeMarket.Position\",\"name\":\"position\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"claimed\",\"type\":\"bool\"}],\"internalType\":\"struct UptimeMarket.Bid[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"getUserParticipatedMarkets\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"hasUserBid\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"marketBidders\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"marketCounter\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"marketUptimeChecks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isUp\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"responseTime\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"markets\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"websiteUrl\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"startTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"bettingEndTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"monitoringEndTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"resolutionTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"yesPool\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"noPool\",\"type\":\"uint256\"},{\"internalType\":\"enum UptimeMarket.MarketStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"outcome\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"uptimePercentage\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalBids\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"oracleAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"},{\"internalType\":\"enum UptimeMarket.Position\",\"name\":\"_position\",\"type\":\"uint8\"}],\"name\":\"placeBid\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"platformFeePercentage\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_marketId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_uptimePercentage\",\"type\":\"uint256\"}],\"name\":\"resolveMarket\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_oracle\",\"type\":\"address\"}],\"name\":\"setOracleAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_feePercentage\",\"type\":\"uint256\"}],\"name\":\"setPlatformFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"userBids\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"bidder\",\"type\":\"address\"},{\"internalType\":\"enum UptimeMarket.Position\",\"name\":\"position\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"claimed\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"userParticipatedMarkets\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"Uses pool-based betting with dynamic odds calculation\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}],\"ReentrancyGuardReentrantCall()\":[{\"details\":\"Unauthorized reentrant call.\"}]},\"kind\":\"dev\",\"methods\":{\"addUptimeCheck(uint256,bool,uint256)\":{\"params\":{\"_isUp\":\"Whether the site was up\",\"_marketId\":\"The ID of the market\",\"_responseTime\":\"Response time in milliseconds\"}},\"cancelMarket(uint256)\":{\"params\":{\"_marketId\":\"The ID of the market\"}},\"claimRefund(uint256)\":{\"params\":{\"_marketId\":\"The ID of the market\"}},\"claimWinnings(uint256)\":{\"params\":{\"_marketId\":\"The ID of the market\"}},\"closeMarket(uint256)\":{\"params\":{\"_marketId\":\"The ID of the market\"}},\"createMarket(string,uint256,uint256)\":{\"params\":{\"_bettingDuration\":\"Duration in seconds for betting period\",\"_monitoringDuration\":\"Duration in seconds for monitoring period\",\"_websiteUrl\":\"The URL of the website to monitor\"}},\"getOdds(uint256)\":{\"returns\":{\"noOdds\":\"Payout multiplier for NO (in basis points)\",\"yesOdds\":\"Payout multiplier for YES (in basis points)\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"placeBid(uint256,uint8)\":{\"params\":{\"_marketId\":\"The ID of the market\",\"_position\":\"YES or NO position\"}},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"resolveMarket(uint256,uint256)\":{\"params\":{\"_marketId\":\"The ID of the market\",\"_uptimePercentage\":\"The uptime percentage in basis points\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"UptimeMarket\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"addUptimeCheck(uint256,bool,uint256)\":{\"notice\":\"Add an uptime check data point (called by oracle during monitoring)\"},\"calculatePotentialWinnings(uint256,uint8,uint256)\":{\"notice\":\"Calculate potential winnings for a bet amount\"},\"cancelMarket(uint256)\":{\"notice\":\"Cancel a market and allow refunds (emergency use)\"},\"claimRefund(uint256)\":{\"notice\":\"Claim refund from a cancelled market\"},\"claimWinnings(uint256)\":{\"notice\":\"Claim winnings from a resolved market\"},\"closeMarket(uint256)\":{\"notice\":\"Close betting period and move to monitoring\"},\"createMarket(string,uint256,uint256)\":{\"notice\":\"Create a new uptime prediction market\"},\"emergencyWithdraw()\":{\"notice\":\"Emergency withdraw (only for stuck funds in edge cases)\"},\"getMarket(uint256)\":{\"notice\":\"Get market details\"},\"getMarketBidders(uint256)\":{\"notice\":\"Get all bidders for a market\"},\"getOdds(uint256)\":{\"notice\":\"Get current odds for a market\"},\"getTotalMarkets()\":{\"notice\":\"Get total number of markets\"},\"getUptimeChecks(uint256)\":{\"notice\":\"Get uptime checks for a market\"},\"getUserBids(uint256,address)\":{\"notice\":\"Get user's bids for a market\"},\"getUserParticipatedMarkets(address)\":{\"notice\":\"Get markets a user has participated in\"},\"placeBid(uint256,uint8)\":{\"notice\":\"Place a bet on a market\"},\"resolveMarket(uint256,uint256)\":{\"notice\":\"Resolve a market (called by oracle)\"},\"setOracleAddress(address)\":{\"notice\":\"Set the oracle address\"},\"setPlatformFee(uint256)\":{\"notice\":\"Update platform fee percentage\"}},\"notice\":\"A prediction market for website uptime - users can bet YES (site stays up) or NO (site goes down)\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/UptimeMarket.sol\":\"UptimeMarket\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/ReentrancyGuard.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/ReentrancyGuard.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Contract module that helps prevent reentrant calls to a function.\\n *\\n * Inheriting from `ReentrancyGuard` will make the {nonReentrant} modifier\\n * available, which can be applied to functions to make sure there are no nested\\n * (reentrant) calls to them.\\n *\\n * Note that because there is a single `nonReentrant` guard, functions marked as\\n * `nonReentrant` may not call one another. This can be worked around by making\\n * those functions `private`, and then adding `external` `nonReentrant` entry\\n * points to them.\\n *\\n * TIP: If you would like to learn more about reentrancy and alternative ways\\n * to protect against it, check out our blog post\\n * https://blog.openzeppelin.com/reentrancy-after-istanbul/[Reentrancy After Istanbul].\\n */\\nabstract contract ReentrancyGuard {\\n    // Booleans are more expensive than uint256 or any type that takes up a full\\n    // word because each write operation emits an extra SLOAD to first read the\\n    // slot's contents, replace the bits taken up by the boolean, and then write\\n    // back. This is the compiler's defense against contract upgrades and\\n    // pointer aliasing, and it cannot be disabled.\\n\\n    // The values being non-zero value makes deployment a bit more expensive,\\n    // but in exchange the refund on every call to nonReentrant will be lower in\\n    // amount. Since refunds are capped to a percentage of the total\\n    // transaction's gas, it is best to keep them low in cases like this one, to\\n    // increase the likelihood of the full refund coming into effect.\\n    uint256 private constant NOT_ENTERED = 1;\\n    uint256 private constant ENTERED = 2;\\n\\n    uint256 private _status;\\n\\n    /**\\n     * @dev Unauthorized reentrant call.\\n     */\\n    error ReentrancyGuardReentrantCall();\\n\\n    constructor() {\\n        _status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Prevents a contract from calling itself, directly or indirectly.\\n     * Calling a `nonReentrant` function from another `nonReentrant`\\n     * function is not supported. It is possible to prevent this from happening\\n     * by making the `nonReentrant` function external, and making it call a\\n     * `private` function that does the actual work.\\n     */\\n    modifier nonReentrant() {\\n        _nonReentrantBefore();\\n        _;\\n        _nonReentrantAfter();\\n    }\\n\\n    function _nonReentrantBefore() private {\\n        // On the first call to nonReentrant, _status will be NOT_ENTERED\\n        if (_status == ENTERED) {\\n            revert ReentrancyGuardReentrantCall();\\n        }\\n\\n        // Any calls to nonReentrant after this point will fail\\n        _status = ENTERED;\\n    }\\n\\n    function _nonReentrantAfter() private {\\n        // By storing the original value once again, a refund is triggered (see\\n        // https://eips.ethereum.org/EIPS/eip-2200)\\n        _status = NOT_ENTERED;\\n    }\\n\\n    /**\\n     * @dev Returns true if the reentrancy guard is currently set to \\\"entered\\\", which indicates there is a\\n     * `nonReentrant` function in the call stack.\\n     */\\n    function _reentrancyGuardEntered() internal view returns (bool) {\\n        return _status == ENTERED;\\n    }\\n}\\n\",\"keccak256\":\"0xf980daa263b661ab8ddee7d4fd833c7da7e7995e2c359ff1f17e67e4112f2236\",\"license\":\"MIT\"},\"contracts/UptimeMarket.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"@openzeppelin/contracts/utils/ReentrancyGuard.sol\\\";\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title UptimeMarket\\n * @notice A prediction market for website uptime - users can bet YES (site stays up) or NO (site goes down)\\n * @dev Uses pool-based betting with dynamic odds calculation\\n */\\ncontract UptimeMarket is ReentrancyGuard, Ownable {\\n    // ============ Enums ============\\n\\n    enum MarketStatus {\\n        OPEN,           // Accepting bids\\n        MONITORING,     // No more bids, waiting for oracle\\n        RESOLVED,       // Oracle has resolved the market\\n        CANCELLED       // Market cancelled (refunds available)\\n    }\\n\\n    enum Position {\\n        YES,            // Betting site will be UP\\n        NO              // Betting site will be DOWN\\n    }\\n\\n    // ============ Structs ============\\n\\n    struct Market {\\n        uint256 id;\\n        string websiteUrl;\\n        uint256 startTime;\\n        uint256 bettingEndTime;      // When betting closes\\n        uint256 monitoringEndTime;   // When monitoring period ends\\n        uint256 resolutionTime;      // Deadline for oracle resolution\\n        uint256 yesPool;             // Total ETH in YES pool\\n        uint256 noPool;              // Total ETH in NO pool\\n        MarketStatus status;\\n        bool outcome;                // true = YES wins (site was up), false = NO wins\\n        uint256 uptimePercentage;    // Final uptime in basis points (9900 = 99%)\\n        uint256 totalBids;\\n        address creator;\\n    }\\n\\n    // Uptime check data point\\n    struct UptimeCheck {\\n        uint256 timestamp;\\n        bool isUp;               // true if site was up, false if down\\n        uint256 responseTime;    // Response time in milliseconds\\n    }\\n\\n    struct Bid {\\n        uint256 marketId;\\n        address bidder;\\n        Position position;\\n        uint256 amount;\\n        uint256 timestamp;\\n        bool claimed;\\n    }\\n\\n    // ============ State Variables ============\\n\\n    uint256 public marketCounter;\\n    uint256 public platformFeePercentage = 200; // 2% in basis points\\n    uint256 public constant MINIMUM_BET = 0.001 ether;\\n    uint256 public constant UPTIME_THRESHOLD = 9900; // 99% uptime threshold\\n\\n    address public oracleAddress;\\n\\n    mapping(uint256 => Market) public markets;\\n    mapping(uint256 => mapping(address => Bid[])) public userBids; // marketId => user => bids\\n    mapping(uint256 => bool) public hasUserBid; // marketId => user => hasBid (for quick lookup)\\n\\n    // Track all bidders for a market\\n    mapping(uint256 => address[]) public marketBidders;\\n    mapping(uint256 => mapping(address => bool)) private isMarketBidder;\\n\\n    // Track markets a user has participated in (for Portfolio/P&L)\\n    mapping(address => uint256[]) public userParticipatedMarkets;\\n    mapping(address => mapping(uint256 => bool)) private hasParticipated;\\n\\n    // Track uptime checks for each market\\n    mapping(uint256 => UptimeCheck[]) public marketUptimeChecks;\\n\\n    // ============ Events ============\\n\\n    event MarketCreated(\\n        uint256 indexed marketId,\\n        string websiteUrl,\\n        uint256 startTime,\\n        uint256 bettingEndTime,\\n        uint256 monitoringEndTime,\\n        uint256 resolutionTime,\\n        address creator\\n    );\\n\\n    event UptimeCheckAdded(\\n        uint256 indexed marketId,\\n        uint256 timestamp,\\n        bool isUp,\\n        uint256 responseTime\\n    );\\n\\n    event BidPlaced(\\n        uint256 indexed marketId,\\n        address indexed bidder,\\n        Position position,\\n        uint256 amount,\\n        uint256 timestamp\\n    );\\n\\n    event MarketStatusChanged(\\n        uint256 indexed marketId,\\n        MarketStatus oldStatus,\\n        MarketStatus newStatus\\n    );\\n\\n    event MarketResolved(\\n        uint256 indexed marketId,\\n        bool outcome,\\n        uint256 uptimePercentage,\\n        uint256 yesPool,\\n        uint256 noPool\\n    );\\n\\n    event WinningsClaimed(\\n        uint256 indexed marketId,\\n        address indexed user,\\n        uint256 amount,\\n        uint256 platformFee\\n    );\\n\\n    event OracleAddressUpdated(address indexed oldOracle, address indexed newOracle);\\n\\n    event PlatformFeeUpdated(uint256 oldFee, uint256 newFee);\\n\\n    // ============ Modifiers ============\\n\\n    modifier onlyOracle() {\\n        require(msg.sender == oracleAddress, \\\"Only oracle can call this\\\");\\n        _;\\n    }\\n\\n    modifier marketExists(uint256 _marketId) {\\n        require(_marketId < marketCounter, \\\"Market does not exist\\\");\\n        _;\\n    }\\n\\n    modifier marketInStatus(uint256 _marketId, MarketStatus _status) {\\n        require(markets[_marketId].status == _status, \\\"Invalid market status\\\");\\n        _;\\n    }\\n\\n    // ============ Constructor ============\\n\\n    constructor(address _initialOwner) Ownable(_initialOwner) {\\n        // Oracle will be set later\\n    }\\n\\n    // ============ Core Functions ============\\n\\n    /**\\n     * @notice Create a new uptime prediction market\\n     * @param _websiteUrl The URL of the website to monitor\\n     * @param _bettingDuration Duration in seconds for betting period\\n     * @param _monitoringDuration Duration in seconds for monitoring period\\n     */\\n    function createMarket(\\n        string memory _websiteUrl,\\n        uint256 _bettingDuration,\\n        uint256 _monitoringDuration\\n    ) external returns (uint256) {\\n        require(bytes(_websiteUrl).length > 0, \\\"Website URL cannot be empty\\\");\\n        require(_bettingDuration >= 1 minutes, \\\"Betting duration must be at least 1 minute\\\");\\n        require(_bettingDuration <= 7 days, \\\"Betting duration cannot exceed 7 days\\\");\\n        require(_monitoringDuration >= 1 minutes, \\\"Monitoring duration must be at least 1 minute\\\");\\n        require(_monitoringDuration <= 30 days, \\\"Monitoring duration cannot exceed 30 days\\\");\\n\\n        uint256 marketId = marketCounter++;\\n        uint256 startTime = block.timestamp;\\n        uint256 bettingEndTime = startTime + _bettingDuration;\\n        uint256 monitoringEndTime = bettingEndTime + _monitoringDuration;\\n        uint256 resolutionTime = monitoringEndTime + 5 minutes; // 5 minute buffer for oracle\\n\\n        Market storage market = markets[marketId];\\n        market.id = marketId;\\n        market.websiteUrl = _websiteUrl;\\n        market.startTime = startTime;\\n        market.bettingEndTime = bettingEndTime;\\n        market.monitoringEndTime = monitoringEndTime;\\n        market.resolutionTime = resolutionTime;\\n        market.status = MarketStatus.OPEN;\\n        market.creator = msg.sender;\\n\\n        emit MarketCreated(\\n            marketId,\\n            _websiteUrl,\\n            startTime,\\n            bettingEndTime,\\n            monitoringEndTime,\\n            resolutionTime,\\n            msg.sender\\n        );\\n\\n        return marketId;\\n    }\\n\\n    /**\\n     * @notice Place a bet on a market\\n     * @param _marketId The ID of the market\\n     * @param _position YES or NO position\\n     */\\n    function placeBid(\\n        uint256 _marketId,\\n        Position _position\\n    )\\n        external\\n        payable\\n        nonReentrant\\n        marketExists(_marketId)\\n        marketInStatus(_marketId, MarketStatus.OPEN)\\n    {\\n        require(msg.value >= MINIMUM_BET, \\\"Bet amount too low\\\");\\n\\n        Market storage market = markets[_marketId];\\n        require(block.timestamp < market.bettingEndTime, \\\"Betting period has ended\\\");\\n\\n        // Update pools\\n        if (_position == Position.YES) {\\n            market.yesPool += msg.value;\\n        } else {\\n            market.noPool += msg.value;\\n        }\\n\\n        // Record the bid\\n        Bid memory newBid = Bid({\\n            marketId: _marketId,\\n            bidder: msg.sender,\\n            position: _position,\\n            amount: msg.value,\\n            timestamp: block.timestamp,\\n            claimed: false\\n        });\\n\\n        userBids[_marketId][msg.sender].push(newBid);\\n        market.totalBids++;\\n\\n        // Track unique bidders\\n        if (!isMarketBidder[_marketId][msg.sender]) {\\n            marketBidders[_marketId].push(msg.sender);\\n            isMarketBidder[_marketId][msg.sender] = true;\\n        }\\n\\n        // Track user participation for Portfolio\\n        if (!hasParticipated[msg.sender][_marketId]) {\\n            userParticipatedMarkets[msg.sender].push(_marketId);\\n            hasParticipated[msg.sender][_marketId] = true;\\n        }\\n\\n        emit BidPlaced(_marketId, msg.sender, _position, msg.value, block.timestamp);\\n    }\\n\\n    /**\\n     * @notice Close betting period and move to monitoring\\n     * @param _marketId The ID of the market\\n     */\\n    function closeMarket(uint256 _marketId)\\n        external\\n        marketExists(_marketId)\\n        marketInStatus(_marketId, MarketStatus.OPEN)\\n    {\\n        Market storage market = markets[_marketId];\\n        require(block.timestamp >= market.bettingEndTime, \\\"Betting period not ended yet\\\");\\n\\n        MarketStatus oldStatus = market.status;\\n        market.status = MarketStatus.MONITORING;\\n\\n        emit MarketStatusChanged(_marketId, oldStatus, MarketStatus.MONITORING);\\n    }\\n\\n    /**\\n     * @notice Add an uptime check data point (called by oracle during monitoring)\\n     * @param _marketId The ID of the market\\n     * @param _isUp Whether the site was up\\n     * @param _responseTime Response time in milliseconds\\n     */\\n    function addUptimeCheck(\\n        uint256 _marketId,\\n        bool _isUp,\\n        uint256 _responseTime\\n    )\\n        external\\n        onlyOracle\\n        marketExists(_marketId)\\n    {\\n        Market storage market = markets[_marketId];\\n        require(\\n            market.status == MarketStatus.OPEN || market.status == MarketStatus.MONITORING,\\n            \\\"Market not active\\\"\\n        );\\n        require(block.timestamp <= market.monitoringEndTime, \\\"Monitoring period has ended\\\");\\n\\n        UptimeCheck memory check = UptimeCheck({\\n            timestamp: block.timestamp,\\n            isUp: _isUp,\\n            responseTime: _responseTime\\n        });\\n\\n        marketUptimeChecks[_marketId].push(check);\\n\\n        emit UptimeCheckAdded(_marketId, block.timestamp, _isUp, _responseTime);\\n    }\\n\\n    /**\\n     * @notice Resolve a market (called by oracle)\\n     * @param _marketId The ID of the market\\n     * @param _uptimePercentage The uptime percentage in basis points\\n     */\\n    function resolveMarket(\\n        uint256 _marketId,\\n        uint256 _uptimePercentage\\n    )\\n        external\\n        onlyOracle\\n        marketExists(_marketId)\\n        marketInStatus(_marketId, MarketStatus.MONITORING)\\n    {\\n        require(_uptimePercentage <= 10000, \\\"Invalid uptime percentage\\\");\\n\\n        Market storage market = markets[_marketId];\\n        market.uptimePercentage = _uptimePercentage;\\n        market.outcome = _uptimePercentage >= UPTIME_THRESHOLD;\\n        market.status = MarketStatus.RESOLVED;\\n\\n        emit MarketResolved(\\n            _marketId,\\n            market.outcome,\\n            _uptimePercentage,\\n            market.yesPool,\\n            market.noPool\\n        );\\n\\n        emit MarketStatusChanged(_marketId, MarketStatus.MONITORING, MarketStatus.RESOLVED);\\n    }\\n\\n    /**\\n     * @notice Claim winnings from a resolved market\\n     * @param _marketId The ID of the market\\n     */\\n    function claimWinnings(uint256 _marketId)\\n        external\\n        nonReentrant\\n        marketExists(_marketId)\\n        marketInStatus(_marketId, MarketStatus.RESOLVED)\\n    {\\n        Market storage market = markets[_marketId];\\n        Bid[] storage bids = userBids[_marketId][msg.sender];\\n\\n        require(bids.length > 0, \\\"No bids found for this market\\\");\\n\\n        uint256 totalWinnings = 0;\\n        uint256 userWinningBets = 0;\\n\\n        // Calculate winnings\\n        for (uint256 i = 0; i < bids.length; i++) {\\n            if (!bids[i].claimed) {\\n                // Check if user won\\n                bool userWon = (market.outcome && bids[i].position == Position.YES) ||\\n                              (!market.outcome && bids[i].position == Position.NO);\\n\\n                if (userWon) {\\n                    userWinningBets += bids[i].amount;\\n                }\\n\\n                bids[i].claimed = true;\\n            }\\n        }\\n\\n        require(userWinningBets > 0, \\\"No winning bets to claim\\\");\\n\\n        // Calculate payout\\n        uint256 totalPool = market.yesPool + market.noPool;\\n        uint256 winningPool = market.outcome ? market.yesPool : market.noPool;\\n\\n        // Proportional share of total pool\\n        totalWinnings = (userWinningBets * totalPool) / winningPool;\\n\\n        // Deduct platform fee\\n        uint256 platformFee = (totalWinnings * platformFeePercentage) / 10000;\\n        uint256 netWinnings = totalWinnings - platformFee;\\n\\n        require(netWinnings > 0, \\\"No winnings after fees\\\");\\n\\n        // Transfer winnings\\n        (bool success, ) = msg.sender.call{value: netWinnings}(\\\"\\\");\\n        require(success, \\\"Transfer failed\\\");\\n\\n        // Transfer platform fee to owner\\n        if (platformFee > 0) {\\n            (bool feeSuccess, ) = owner().call{value: platformFee}(\\\"\\\");\\n            require(feeSuccess, \\\"Fee transfer failed\\\");\\n        }\\n\\n        emit WinningsClaimed(_marketId, msg.sender, netWinnings, platformFee);\\n    }\\n\\n    /**\\n     * @notice Cancel a market and allow refunds (emergency use)\\n     * @param _marketId The ID of the market\\n     */\\n    function cancelMarket(uint256 _marketId)\\n        external\\n        onlyOwner\\n        marketExists(_marketId)\\n    {\\n        Market storage market = markets[_marketId];\\n        require(market.status != MarketStatus.RESOLVED, \\\"Cannot cancel resolved market\\\");\\n        require(market.status != MarketStatus.CANCELLED, \\\"Market already cancelled\\\");\\n\\n        MarketStatus oldStatus = market.status;\\n        market.status = MarketStatus.CANCELLED;\\n\\n        emit MarketStatusChanged(_marketId, oldStatus, MarketStatus.CANCELLED);\\n    }\\n\\n    /**\\n     * @notice Claim refund from a cancelled market\\n     * @param _marketId The ID of the market\\n     */\\n    function claimRefund(uint256 _marketId)\\n        external\\n        nonReentrant\\n        marketExists(_marketId)\\n        marketInStatus(_marketId, MarketStatus.CANCELLED)\\n    {\\n        Bid[] storage bids = userBids[_marketId][msg.sender];\\n        require(bids.length > 0, \\\"No bids found for this market\\\");\\n\\n        uint256 totalRefund = 0;\\n\\n        for (uint256 i = 0; i < bids.length; i++) {\\n            if (!bids[i].claimed) {\\n                totalRefund += bids[i].amount;\\n                bids[i].claimed = true;\\n            }\\n        }\\n\\n        require(totalRefund > 0, \\\"No refund available\\\");\\n\\n        (bool success, ) = msg.sender.call{value: totalRefund}(\\\"\\\");\\n        require(success, \\\"Refund transfer failed\\\");\\n    }\\n\\n    // ============ View Functions ============\\n\\n    /**\\n     * @notice Get market details\\n     */\\n    function getMarket(uint256 _marketId)\\n        external\\n        view\\n        marketExists(_marketId)\\n        returns (Market memory)\\n    {\\n        return markets[_marketId];\\n    }\\n\\n    /**\\n     * @notice Get user's bids for a market\\n     */\\n    function getUserBids(uint256 _marketId, address _user)\\n        external\\n        view\\n        returns (Bid[] memory)\\n    {\\n        return userBids[_marketId][_user];\\n    }\\n\\n    /**\\n     * @notice Get current odds for a market\\n     * @return yesOdds Payout multiplier for YES (in basis points)\\n     * @return noOdds Payout multiplier for NO (in basis points)\\n     */\\n    function getOdds(uint256 _marketId)\\n        external\\n        view\\n        marketExists(_marketId)\\n        returns (uint256 yesOdds, uint256 noOdds)\\n    {\\n        Market storage market = markets[_marketId];\\n        uint256 totalPool = market.yesPool + market.noPool;\\n\\n        if (totalPool == 0) {\\n            return (10000, 10000); // 1:1 odds if no bets\\n        }\\n\\n        if (market.yesPool == 0) {\\n            yesOdds = type(uint256).max; // Infinite odds\\n            noOdds = 10000;\\n        } else if (market.noPool == 0) {\\n            yesOdds = 10000;\\n            noOdds = type(uint256).max;\\n        } else {\\n            // Odds = (total pool / winning pool) * 10000\\n            yesOdds = (totalPool * 10000) / market.yesPool;\\n            noOdds = (totalPool * 10000) / market.noPool;\\n        }\\n    }\\n\\n    /**\\n     * @notice Get all bidders for a market\\n     */\\n    function getMarketBidders(uint256 _marketId)\\n        external\\n        view\\n        returns (address[] memory)\\n    {\\n        return marketBidders[_marketId];\\n    }\\n\\n    /**\\n     * @notice Get markets a user has participated in\\n     */\\n    function getUserParticipatedMarkets(address _user)\\n        external\\n        view\\n        returns (uint256[] memory)\\n    {\\n        return userParticipatedMarkets[_user];\\n    }\\n\\n    /**\\n     * @notice Get uptime checks for a market\\n     */\\n    function getUptimeChecks(uint256 _marketId)\\n        external\\n        view\\n        marketExists(_marketId)\\n        returns (UptimeCheck[] memory)\\n    {\\n        return marketUptimeChecks[_marketId];\\n    }\\n\\n    /**\\n     * @notice Calculate potential winnings for a bet amount\\n     */\\n    function calculatePotentialWinnings(\\n        uint256 _marketId,\\n        Position _position,\\n        uint256 _amount\\n    )\\n        external\\n        view\\n        marketExists(_marketId)\\n        returns (uint256 grossWinnings, uint256 netWinnings)\\n    {\\n        Market storage market = markets[_marketId];\\n\\n        uint256 newYesPool = market.yesPool;\\n        uint256 newNoPool = market.noPool;\\n\\n        if (_position == Position.YES) {\\n            newYesPool += _amount;\\n        } else {\\n            newNoPool += _amount;\\n        }\\n\\n        uint256 totalPool = newYesPool + newNoPool;\\n        uint256 winningPool = _position == Position.YES ? newYesPool : newNoPool;\\n\\n        grossWinnings = (_amount * totalPool) / winningPool;\\n        uint256 platformFee = (grossWinnings * platformFeePercentage) / 10000;\\n        netWinnings = grossWinnings - platformFee;\\n    }\\n\\n    // ============ Admin Functions ============\\n\\n    /**\\n     * @notice Set the oracle address\\n     */\\n    function setOracleAddress(address _oracle) external onlyOwner {\\n        require(_oracle != address(0), \\\"Invalid oracle address\\\");\\n        address oldOracle = oracleAddress;\\n        oracleAddress = _oracle;\\n        emit OracleAddressUpdated(oldOracle, _oracle);\\n    }\\n\\n    /**\\n     * @notice Update platform fee percentage\\n     */\\n    function setPlatformFee(uint256 _feePercentage) external onlyOwner {\\n        require(_feePercentage <= 1000, \\\"Fee cannot exceed 10%\\\");\\n        uint256 oldFee = platformFeePercentage;\\n        platformFeePercentage = _feePercentage;\\n        emit PlatformFeeUpdated(oldFee, _feePercentage);\\n    }\\n\\n    /**\\n     * @notice Get total number of markets\\n     */\\n    function getTotalMarkets() external view returns (uint256) {\\n        return marketCounter;\\n    }\\n\\n    /**\\n     * @notice Emergency withdraw (only for stuck funds in edge cases)\\n     */\\n    function emergencyWithdraw() external onlyOwner {\\n        (bool success, ) = owner().call{value: address(this).balance}(\\\"\\\");\\n        require(success, \\\"Withdraw failed\\\");\\n    }\\n\\n    // Receive ETH\\n    receive() external payable {}\\n}\\n\",\"keccak256\":\"0xe3093a4fb71d1bd5da9e7431e63fcac061d09320b1ab6ac616ec9964f2e4870c\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405260c86003553480156200001657600080fd5b5060405162003082380380620030828339810160408190526200003991620000d3565b6001600055806001600160a01b0381166200006e57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b620000798162000081565b505062000105565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b600060208284031215620000e657600080fd5b81516001600160a01b0381168114620000fe57600080fd5b9392505050565b612f6d80620001156000396000f3fe6080604052600436106101f25760003560e01c8063677bd9ff1161010d578063a89ae4ba116100a0578063cdd78cfc1161006f578063cdd78cfc1461061c578063cfa51b1614610632578063db2e21bc14610652578063eb44fdd314610667578063f2fde38b1461069457600080fd5b8063a89ae4ba14610583578063ae418095146105a3578063af602176146105c3578063b1283e77146105e357600080fd5b80638da5cb5b116100dc5780638da5cb5b146105145780638f6a90ac14610532578063935aae4014610548578063941d08961461056357600080fd5b8063677bd9ff146104aa578063715018a6146104ca5780637c16cd9e146104df57806381ebf209146104ff57600080fd5b806324760807116101855780634c69c00f116101545780634c69c00f146104125780635900bb4e146104325780635b7baf641461046a578063605573331461048a57600080fd5b80632476080714610374578063270165a31461039857806338a5e9fd146103c557806341fdb485146103f257600080fd5b806318ad735d116101c157806318ad735d1461029f578063192eaa1f146102cc5780631fcfbce51461030757806321ea85aa1461033457600080fd5b806311533981146101fe578063126c41661461021357806312e8e2c31461024d578063148cf6541461026d57600080fd5b366101f957005b600080fd5b61021161020c3660046126ac565b6106b4565b005b34801561021f57600080fd5b5061023361022e3660046126d8565b610a75565b604080519283526020830191909152015b60405180910390f35b34801561025957600080fd5b506102116102683660046126d8565b610b53565b34801561027957600080fd5b5061028d610288366004612708565b610bea565b60405161024496959493929190612767565b3480156102ab57600080fd5b506102bf6102ba3660046126d8565b610c5c565b60405161024491906127a9565b3480156102d857600080fd5b506102ec6102e7366004612804565b610d07565b60408051938452911515602084015290820152606001610244565b34801561031357600080fd5b50610327610322366004612826565b610d4d565b6040516102449190612849565b34801561034057600080fd5b5061036461034f3660046126d8565b60076020526000908152604090205460ff1681565b6040519015158152602001610244565b34801561038057600080fd5b5061038a60025481565b604051908152602001610244565b3480156103a457600080fd5b506103b86103b33660046128c8565b610e47565b60405161024491906128e3565b3480156103d157600080fd5b506103e56103e03660046126d8565b610eb3565b6040516102449190612927565b3480156103fe57600080fd5b5061023361040d366004612968565b610f1e565b34801561041e57600080fd5b5061021161042d3660046128c8565b611018565b34801561043e57600080fd5b5061045261044d366004612804565b6110c1565b6040516001600160a01b039091168152602001610244565b34801561047657600080fd5b506102116104853660046126d8565b6110f9565b34801561049657600080fd5b506102116104a5366004612804565b611370565b3480156104b657600080fd5b506102116104c53660046126d8565b611564565b3480156104d657600080fd5b50610211611a6e565b3480156104eb57600080fd5b506102116104fa3660046126d8565b611a82565b34801561050b57600080fd5b5060025461038a565b34801561052057600080fd5b506001546001600160a01b0316610452565b34801561053e57600080fd5b5061038a6126ac81565b34801561055457600080fd5b5061038a66038d7ea4c6800081565b34801561056f57600080fd5b5061021161057e36600461298d565b611be5565b34801561058f57600080fd5b50600454610452906001600160a01b031681565b3480156105af57600080fd5b506102116105be3660046126d8565b611dda565b3480156105cf57600080fd5b5061038a6105de3660046129ca565b611ef1565b3480156105ef57600080fd5b506106036105fe3660046126d8565b611f22565b6040516102449d9c9b9a99989796959493929190612a4a565b34801561062857600080fd5b5061038a60035481565b34801561063e57600080fd5b5061038a61064d366004612ae7565b61201e565b34801561065e57600080fd5b506102116122f7565b34801561067357600080fd5b506106876106823660046126d8565b6123a5565b6040516102449190612bab565b3480156106a057600080fd5b506102116106af3660046128c8565b61253b565b6106bc612576565b8160025481106106e75760405162461bcd60e51b81526004016106de90612c73565b60405180910390fd5b8260008060008381526005602052604090206008015460ff1660038111156107115761071161273d565b1461072e5760405162461bcd60e51b81526004016106de90612ca2565b66038d7ea4c6800034101561077a5760405162461bcd60e51b815260206004820152601260248201527142657420616d6f756e7420746f6f206c6f7760701b60448201526064016106de565b6000858152600560205260409020600381015442106107db5760405162461bcd60e51b815260206004820152601860248201527f42657474696e6720706572696f642068617320656e646564000000000000000060448201526064016106de565b60008560018111156107ef576107ef61273d565b0361081357348160060160008282546108089190612ce7565b9091555061082d9050565b348160070160008282546108279190612ce7565b90915550505b6040805160c08101825287815233602082015260009181018760018111156108575761085761273d565b81523460208083019190915242604080840191909152600060609093018390528a83526006825280832033845282528083208054600180820183559185529383902085516005909502019384559184015183830180546001600160a01b031981166001600160a01b0390931692831782559286015195965086959390926001600160a81b03191690911790600160a01b9084908111156108f9576108f961273d565b0217905550606082015160028201556080820151600382015560a0909101516004909101805460ff1916911515919091179055600a8201805490600061093e83612cfa565b9091555050600087815260096020908152604080832033845290915290205460ff166109b75760008781526008602090815260408083208054600181810183559185528385200180546001600160a01b031916339081179091558b855260098452828520908552909252909120805460ff191690911790555b336000908152600b602090815260408083208a845290915290205460ff16610a1c57336000818152600a60209081526040808320805460018181018355918552838520018c9055938352600b82528083208b84529091529020805460ff191690911790555b336001600160a01b0316877f66624be75b2562d9321b51d45b928f6347ddf4a3f5ac9899d59b94835aa12c06883442604051610a5a93929190612d13565b60405180910390a35050505050610a716001600055565b5050565b600080826002548110610a9a5760405162461bcd60e51b81526004016106de90612c73565b600084815260056020526040812060078101546006820154919291610abf9190612ce7565b905080600003610ad85761271080945094505050610b4d565b8160060154600003610af35760001994506127109350610b4a565b8160070154600003610b0e5761271094506000199350610b4a565b6006820154610b1f82612710612d32565b610b299190612d49565b6007830154909550610b3d82612710612d32565b610b479190612d49565b93505b50505b50915091565b610b5b6125a0565b6103e8811115610ba55760405162461bcd60e51b81526020600482015260156024820152744665652063616e6e6f74206578636565642031302560581b60448201526064016106de565b600380549082905560408051828152602081018490527fd347e206f25a89b917fc9482f1a2d294d749baa4dc9bde7fb495ee11fe491643910160405180910390a15050565b60066020528260005260406000206020528160005260406000208181548110610c1257600080fd5b6000918252602090912060059091020180546001820154600283015460038401546004909401549296506001600160a01b038216955060ff600160a01b9092048216945092911686565b6060816002548110610c805760405162461bcd60e51b81526004016106de90612c73565b6000838152600c6020908152604080832080548251818502810185019093528083529193909284015b82821015610cfa57600084815260209081902060408051606081018252600386029092018054835260018082015460ff16151584860152600290910154918301919091529083529092019101610ca9565b5050505091505b50919050565b600c6020528160005260406000208181548110610d2357600080fd5b600091825260209091206003909102018054600182015460029092015490935060ff909116915083565b60008281526006602090815260408083206001600160a01b03851684528252808320805482518185028101850190935280835260609492939192909184015b82821015610e3a5760008481526020908190206040805160c08101825260058602909201805483526001808201546001600160a01b038116958501959095529293909291840191600160a01b90910460ff1690811115610dee57610dee61273d565b6001811115610dff57610dff61273d565b815260028201546020808301919091526003830154604083015260049092015460ff1615156060909101529082526001929092019101610d8c565b5050505090505b92915050565b6001600160a01b0381166000908152600a6020908152604091829020805483518184028101840190945280845260609392830182828015610ea757602002820191906000526020600020905b815481526020019060010190808311610e93575b50505050509050919050565b600081815260086020908152604091829020805483518184028101840190945280845260609392830182828015610ea757602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610ef55750505050509050919050565b600080846002548110610f435760405162461bcd60e51b81526004016106de90612c73565b6000868152600560205260408120600681015460078201549192909190886001811115610f7257610f7261273d565b03610f8857610f818783612ce7565b9150610f95565b610f928782612ce7565b90505b6000610fa18284612ce7565b90506000808a6001811115610fb857610fb861273d565b14610fc35782610fc5565b835b905080610fd2838b612d32565b610fdc9190612d49565b975060006127106003548a610ff19190612d32565b610ffb9190612d49565b9050611007818a612d6b565b975050505050505050935093915050565b6110206125a0565b6001600160a01b03811661106f5760405162461bcd60e51b8152602060048201526016602482015275496e76616c6964206f7261636c65206164647265737360501b60448201526064016106de565b600480546001600160a01b038381166001600160a01b0319831681179093556040519116919082907fd3afd1676752459d3aa8b6f73633fac8efd724610da9c4cd8d8e4fa1631841fb90600090a35050565b600860205281600052604060002081815481106110dd57600080fd5b6000918252602090912001546001600160a01b03169150829050565b611101612576565b8060025481106111235760405162461bcd60e51b81526004016106de90612c73565b8160038060008381526005602052604090206008015460ff16600381111561114d5761114d61273d565b1461116a5760405162461bcd60e51b81526004016106de90612ca2565b6000848152600660209081526040808320338452909152902080546111d15760405162461bcd60e51b815260206004820152601d60248201527f4e6f206269647320666f756e6420666f722074686973206d61726b657400000060448201526064016106de565b6000805b8254811015611285578281815481106111f0576111f0612d7e565b600091825260209091206004600590920201015460ff166112735782818154811061121d5761121d612d7e565b9060005260206000209060050201600201548261123a9190612ce7565b9150600183828154811061125057611250612d7e565b60009182526020909120600590910201600401805460ff19169115159190911790555b8061127d81612cfa565b9150506111d5565b50600081116112cc5760405162461bcd60e51b81526020600482015260136024820152724e6f20726566756e6420617661696c61626c6560681b60448201526064016106de565b604051600090339083908381818185875af1925050503d806000811461130e576040519150601f19603f3d011682016040523d82523d6000602084013e611313565b606091505b505090508061135d5760405162461bcd60e51b81526020600482015260166024820152751499599d5b99081d1c985b9cd9995c8819985a5b195960521b60448201526064016106de565b50505050505061136d6001600055565b50565b6004546001600160a01b031633146113c65760405162461bcd60e51b81526020600482015260196024820152784f6e6c79206f7261636c652063616e2063616c6c207468697360381b60448201526064016106de565b8160025481106113e85760405162461bcd60e51b81526004016106de90612c73565b8260018060008381526005602052604090206008015460ff1660038111156114125761141261273d565b1461142f5760405162461bcd60e51b81526004016106de90612ca2565b6127108411156114815760405162461bcd60e51b815260206004820152601960248201527f496e76616c696420757074696d652070657263656e746167650000000000000060448201526064016106de565b6000858152600560209081526040918290206009810187905560088101805460ff196101006126ac8b101581029190911661ffff1990921691909117600217918290556006830154600784015486519290930460ff16151582529381018990529384019290925260608301919091529086907f71b668670f5341cfcc8094e91b9c6beeb06cbc13cd608aa869b673d843fed0a99060800160405180910390a2857fdfacc4492524300f7487a619cdb7ab99bab5b5518d5ccec25d2bc8b35bd4aa3960016002604051611554929190612d94565b60405180910390a2505050505050565b61156c612576565b80600254811061158e5760405162461bcd60e51b81526004016106de90612c73565b8160028060008381526005602052604090206008015460ff1660038111156115b8576115b861273d565b146115d55760405162461bcd60e51b81526004016106de90612ca2565b60008481526005602090815260408083206006835281842033855290925290912080546116445760405162461bcd60e51b815260206004820152601d60248201527f4e6f206269647320666f756e6420666f722074686973206d61726b657400000060448201526064016106de565b60008060005b83548110156117c25783818154811061166557611665612d7e565b600091825260209091206004600590920201015460ff166117b0576008850154600090610100900460ff1680156116dd575060008583815481106116ab576116ab612d7e565b906000526020600020906005020160010160149054906101000a900460ff1660018111156116db576116db61273d565b145b8061173e57506008860154610100900460ff1615801561173e5750600185838154811061170c5761170c612d7e565b906000526020600020906005020160010160149054906101000a900460ff16600181111561173c5761173c61273d565b145b905080156117785784828154811061175857611758612d7e565b906000526020600020906005020160020154836117759190612ce7565b92505b600185838154811061178c5761178c612d7e565b60009182526020909120600590910201600401805460ff1916911515919091179055505b806117ba81612cfa565b91505061164a565b50600081116118135760405162461bcd60e51b815260206004820152601860248201527f4e6f2077696e6e696e67206265747320746f20636c61696d000000000000000060448201526064016106de565b6000846007015485600601546118299190612ce7565b6008860154909150600090610100900460ff1661184a578560070154611850565b85600601545b90508061185d8385612d32565b6118679190612d49565b935060006127106003548661187c9190612d32565b6118869190612d49565b905060006118948287612d6b565b9050600081116118df5760405162461bcd60e51b81526020600482015260166024820152754e6f2077696e6e696e6773206166746572206665657360501b60448201526064016106de565b604051600090339083908381818185875af1925050503d8060008114611921576040519150601f19603f3d011682016040523d82523d6000602084013e611926565b606091505b50509050806119695760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016106de565b8215611a1b5760006119836001546001600160a01b031690565b6001600160a01b03168460405160006040518083038185875af1925050503d80600081146119cd576040519150601f19603f3d011682016040523d82523d6000602084013e6119d2565b606091505b5050905080611a195760405162461bcd60e51b8152602060048201526013602482015272119959481d1c985b9cd9995c8819985a5b1959606a1b60448201526064016106de565b505b604080518381526020810185905233918f917f6256309dc4c6375473b26b31fc0e88b0ca9ebca0e558d39fec5aa96863ad40cb910160405180910390a350505050505050505050505061136d6001600055565b611a766125a0565b611a8060006125cd565b565b611a8a6125a0565b806002548110611aac5760405162461bcd60e51b81526004016106de90612c73565b60008281526005602052604090206002600882015460ff166003811115611ad557611ad561273d565b03611b225760405162461bcd60e51b815260206004820152601d60248201527f43616e6e6f742063616e63656c207265736f6c766564206d61726b657400000060448201526064016106de565b6003600882015460ff166003811115611b3d57611b3d61273d565b03611b8a5760405162461bcd60e51b815260206004820152601860248201527f4d61726b657420616c72656164792063616e63656c6c6564000000000000000060448201526064016106de565b60088101805460ff81169160039160ff19166001830217905550837fdfacc4492524300f7487a619cdb7ab99bab5b5518d5ccec25d2bc8b35bd4aa39826003604051611bd7929190612d94565b60405180910390a250505050565b6004546001600160a01b03163314611c3b5760405162461bcd60e51b81526020600482015260196024820152784f6e6c79206f7261636c652063616e2063616c6c207468697360381b60448201526064016106de565b826002548110611c5d5760405162461bcd60e51b81526004016106de90612c73565b600084815260056020526040812090600882015460ff166003811115611c8557611c8561273d565b1480611ca957506001600882015460ff166003811115611ca757611ca761273d565b145b611ce95760405162461bcd60e51b81526020600482015260116024820152704d61726b6574206e6f742061637469766560781b60448201526064016106de565b8060040154421115611d3d5760405162461bcd60e51b815260206004820152601b60248201527f4d6f6e69746f72696e6720706572696f642068617320656e646564000000000060448201526064016106de565b60408051606080820183524280835287151560208085018281528587018a815260008d8152600c84528881208054600180820183559183529185902089516003909302019182559251928101805460ff191693151593909317909255516002909101558551928352820152928301869052909187917f7e545de76c61d950ea7321ebcfa64fe06437a42c85609c2d78e6a1660b3512929101611554565b806002548110611dfc5760405162461bcd60e51b81526004016106de90612c73565b8160008060008381526005602052604090206008015460ff166003811115611e2657611e2661273d565b14611e435760405162461bcd60e51b81526004016106de90612ca2565b60008481526005602052604090206003810154421015611ea55760405162461bcd60e51b815260206004820152601c60248201527f42657474696e6720706572696f64206e6f7420656e646564207965740000000060448201526064016106de565b60088101805460ff81169160019160ff191682800217905550857fdfacc4492524300f7487a619cdb7ab99bab5b5518d5ccec25d2bc8b35bd4aa39826001604051611554929190612d94565b600a6020528160005260406000208181548110611f0d57600080fd5b90600052602060002001600091509150505481565b60056020526000908152604090208054600182018054919291611f4490612daf565b80601f0160208091040260200160405190810160405280929190818152602001828054611f7090612daf565b8015611fbd5780601f10611f9257610100808354040283529160200191611fbd565b820191906000526020600020905b815481529060010190602001808311611fa057829003601f168201915b50505060028401546003850154600486015460058701546006880154600789015460088a015460098b0154600a8c0154600b909c01549a9b979a96995094975092959194909360ff808516946101009004169290916001600160a01b03168d565b6000808451116120705760405162461bcd60e51b815260206004820152601b60248201527f576562736974652055524c2063616e6e6f7420626520656d707479000000000060448201526064016106de565b603c8310156120d45760405162461bcd60e51b815260206004820152602a60248201527f42657474696e67206475726174696f6e206d757374206265206174206c656173604482015269742031206d696e75746560b01b60648201526084016106de565b62093a808311156121355760405162461bcd60e51b815260206004820152602560248201527f42657474696e67206475726174696f6e2063616e6e6f74206578636565642037604482015264206461797360d81b60648201526084016106de565b603c82101561219c5760405162461bcd60e51b815260206004820152602d60248201527f4d6f6e69746f72696e67206475726174696f6e206d757374206265206174206c60448201526c656173742031206d696e75746560981b60648201526084016106de565b62278d008211156122015760405162461bcd60e51b815260206004820152602960248201527f4d6f6e69746f72696e67206475726174696f6e2063616e6e6f7420657863656560448201526864203330206461797360b81b60648201526084016106de565b600280546000918261221283612cfa565b9091555090504260006122258683612ce7565b905060006122338683612ce7565b905060006122438261012c612ce7565b6000868152600560205260409020868155909150600181016122658b82612e32565b506002810185905560038101849055600481018390556005810182905560088101805460ff19169055600b810180546001600160a01b0319163390811790915560405187917f6b68a2fc85527405d93824f9ea03022f60f50735f43c2bf600582af1824f5006916122df918e918a918a918a918a91612ef2565b60405180910390a250939450505050505b9392505050565b6122ff6125a0565b60006123136001546001600160a01b031690565b6001600160a01b03164760405160006040518083038185875af1925050503d806000811461235d576040519150601f19603f3d011682016040523d82523d6000602084013e612362565b606091505b505090508061136d5760405162461bcd60e51b815260206004820152600f60248201526e15da5d1a191c985dc819985a5b1959608a1b60448201526064016106de565b6123ad61261f565b8160025481106123cf5760405162461bcd60e51b81526004016106de90612c73565b60056000848152602001908152602001600020604051806101a00160405290816000820154815260200160018201805461240890612daf565b80601f016020809104026020016040519081016040528092919081815260200182805461243490612daf565b80156124815780601f1061245657610100808354040283529160200191612481565b820191906000526020600020905b81548152906001019060200180831161246457829003601f168201915b50505091835250506002820154602082015260038083015460408301526004830154606083015260058301546080830152600683015460a0830152600783015460c0830152600883015460e09092019160ff16908111156124e4576124e461273d565b60038111156124f5576124f561273d565b81526008820154610100900460ff161515602082015260098201546040820152600a8201546060820152600b909101546001600160a01b03166080909101529392505050565b6125436125a0565b6001600160a01b03811661256d57604051631e4fbdf760e01b8152600060048201526024016106de565b61136d816125cd565b60026000540361259957604051633ee5aeb560e01b815260040160405180910390fd5b6002600055565b6001546001600160a01b03163314611a805760405163118cdaa760e01b81523360048201526024016106de565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b604051806101a001604052806000815260200160608152602001600081526020016000815260200160008152602001600081526020016000815260200160008152602001600060038111156126765761267661273d565b8152600060208201819052604082018190526060820181905260809091015290565b8035600281106126a757600080fd5b919050565b600080604083850312156126bf57600080fd5b823591506126cf60208401612698565b90509250929050565b6000602082840312156126ea57600080fd5b5035919050565b80356001600160a01b03811681146126a757600080fd5b60008060006060848603121561271d57600080fd5b8335925061272d602085016126f1565b9150604084013590509250925092565b634e487b7160e01b600052602160045260246000fd5b600281106127635761276361273d565b9052565b8681526001600160a01b038616602082015260c0810161278a6040830187612753565b84606083015283608083015282151560a0830152979650505050505050565b602080825282518282018190526000919060409081850190868401855b828110156127f7578151805185528681015115158786015285015185850152606090930192908501906001016127c6565b5091979650505050505050565b6000806040838503121561281757600080fd5b50508035926020909101359150565b6000806040838503121561283957600080fd5b823591506126cf602084016126f1565b602080825282518282018190526000919060409081850190868401855b828110156127f757815180518552868101516001600160a01b0316878601528581015161289587870182612753565b50606081810151908601526080808201519086015260a09081015115159085015260c09093019290850190600101612866565b6000602082840312156128da57600080fd5b6122f0826126f1565b6020808252825182820181905260009190848201906040850190845b8181101561291b578351835292840192918401916001016128ff565b50909695505050505050565b6020808252825182820181905260009190848201906040850190845b8181101561291b5783516001600160a01b031683529284019291840191600101612943565b60008060006060848603121561297d57600080fd5b8335925061272d60208501612698565b6000806000606084860312156129a257600080fd5b83359250602084013580151581146129b957600080fd5b929592945050506040919091013590565b600080604083850312156129dd57600080fd5b6129e6836126f1565b946020939093013593505050565b6000815180845260005b81811015612a1a576020818501810151868301820152016129fe565b506000602082860101526020601f19601f83011685010191505092915050565b600481106127635761276361273d565b8d81526101a060208201526000612a656101a083018f6129f4565b90508c60408301528b60608301528a60808301528960a08301528860c08301528760e0830152612a99610100830188612a3a565b9415156101208201526101408101939093526101608301919091526001600160a01b0316610180909101529998505050505050505050565b634e487b7160e01b600052604160045260246000fd5b600080600060608486031215612afc57600080fd5b833567ffffffffffffffff80821115612b1457600080fd5b818601915086601f830112612b2857600080fd5b813581811115612b3a57612b3a612ad1565b604051601f8201601f19908116603f01168101908382118183101715612b6257612b62612ad1565b81604052828152896020848701011115612b7b57600080fd5b82602086016020830137600060208483010152809750505050505060208401359150604084013590509250925092565b6020815281516020820152600060208301516101a0806040850152612bd46101c08501836129f4565b91506040850151606085015260608501516080850152608085015160a085015260a085015160c085015260c085015160e085015260e0850151610100818187015280870151915050610120612c2b81870183612a3a565b8601519050610140612c408682018315159052565b8601516101608681019190915286015161018080870191909152909501516001600160a01b031693019290925250919050565b60208082526015908201527413585c9ad95d08191bd95cc81b9bdd08195e1a5cdd605a1b604082015260600190565b602080825260159082015274496e76616c6964206d61726b65742073746174757360581b604082015260600190565b634e487b7160e01b600052601160045260246000fd5b80820180821115610e4157610e41612cd1565b600060018201612d0c57612d0c612cd1565b5060010190565b60608101612d218286612753565b602082019390935260400152919050565b8082028115828204841417610e4157610e41612cd1565b600082612d6657634e487b7160e01b600052601260045260246000fd5b500490565b81810381811115610e4157610e41612cd1565b634e487b7160e01b600052603260045260246000fd5b60408101612da28285612a3a565b6122f06020830184612a3a565b600181811c90821680612dc357607f821691505b602082108103610d0157634e487b7160e01b600052602260045260246000fd5b601f821115612e2d57600081815260208120601f850160051c81016020861015612e0a5750805b601f850160051c820191505b81811015612e2957828155600101612e16565b5050505b505050565b815167ffffffffffffffff811115612e4c57612e4c612ad1565b612e6081612e5a8454612daf565b84612de3565b602080601f831160018114612e955760008415612e7d5750858301515b600019600386901b1c1916600185901b178555612e29565b600085815260208120601f198616915b82811015612ec457888601518255948401946001909101908401612ea5565b5085821015612ee25787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b60c081526000612f0560c08301896129f4565b6020830197909752506040810194909452606084019290925260808301526001600160a01b031660a09091015291905056fea26469706673582212202f75066d3bafa49dc80da13b2c017d1cab4cfa50daa694f073f18cbd2484aa6e64736f6c63430008140033",
+  "deployedBytecode": "0x6080604052600436106101f25760003560e01c8063677bd9ff1161010d578063a89ae4ba116100a0578063cdd78cfc1161006f578063cdd78cfc1461061c578063cfa51b1614610632578063db2e21bc14610652578063eb44fdd314610667578063f2fde38b1461069457600080fd5b8063a89ae4ba14610583578063ae418095146105a3578063af602176146105c3578063b1283e77146105e357600080fd5b80638da5cb5b116100dc5780638da5cb5b146105145780638f6a90ac14610532578063935aae4014610548578063941d08961461056357600080fd5b8063677bd9ff146104aa578063715018a6146104ca5780637c16cd9e146104df57806381ebf209146104ff57600080fd5b806324760807116101855780634c69c00f116101545780634c69c00f146104125780635900bb4e146104325780635b7baf641461046a578063605573331461048a57600080fd5b80632476080714610374578063270165a31461039857806338a5e9fd146103c557806341fdb485146103f257600080fd5b806318ad735d116101c157806318ad735d1461029f578063192eaa1f146102cc5780631fcfbce51461030757806321ea85aa1461033457600080fd5b806311533981146101fe578063126c41661461021357806312e8e2c31461024d578063148cf6541461026d57600080fd5b366101f957005b600080fd5b61021161020c3660046126ac565b6106b4565b005b34801561021f57600080fd5b5061023361022e3660046126d8565b610a75565b604080519283526020830191909152015b60405180910390f35b34801561025957600080fd5b506102116102683660046126d8565b610b53565b34801561027957600080fd5b5061028d610288366004612708565b610bea565b60405161024496959493929190612767565b3480156102ab57600080fd5b506102bf6102ba3660046126d8565b610c5c565b60405161024491906127a9565b3480156102d857600080fd5b506102ec6102e7366004612804565b610d07565b60408051938452911515602084015290820152606001610244565b34801561031357600080fd5b50610327610322366004612826565b610d4d565b6040516102449190612849565b34801561034057600080fd5b5061036461034f3660046126d8565b60076020526000908152604090205460ff1681565b6040519015158152602001610244565b34801561038057600080fd5b5061038a60025481565b604051908152602001610244565b3480156103a457600080fd5b506103b86103b33660046128c8565b610e47565b60405161024491906128e3565b3480156103d157600080fd5b506103e56103e03660046126d8565b610eb3565b6040516102449190612927565b3480156103fe57600080fd5b5061023361040d366004612968565b610f1e565b34801561041e57600080fd5b5061021161042d3660046128c8565b611018565b34801561043e57600080fd5b5061045261044d366004612804565b6110c1565b6040516001600160a01b039091168152602001610244565b34801561047657600080fd5b506102116104853660046126d8565b6110f9565b34801561049657600080fd5b506102116104a5366004612804565b611370565b3480156104b657600080fd5b506102116104c53660046126d8565b611564565b3480156104d657600080fd5b50610211611a6e565b3480156104eb57600080fd5b506102116104fa3660046126d8565b611a82565b34801561050b57600080fd5b5060025461038a565b34801561052057600080fd5b506001546001600160a01b0316610452565b34801561053e57600080fd5b5061038a6126ac81565b34801561055457600080fd5b5061038a66038d7ea4c6800081565b34801561056f57600080fd5b5061021161057e36600461298d565b611be5565b34801561058f57600080fd5b50600454610452906001600160a01b031681565b3480156105af57600080fd5b506102116105be3660046126d8565b611dda565b3480156105cf57600080fd5b5061038a6105de3660046129ca565b611ef1565b3480156105ef57600080fd5b506106036105fe3660046126d8565b611f22565b6040516102449d9c9b9a99989796959493929190612a4a565b34801561062857600080fd5b5061038a60035481565b34801561063e57600080fd5b5061038a61064d366004612ae7565b61201e565b34801561065e57600080fd5b506102116122f7565b34801561067357600080fd5b506106876106823660046126d8565b6123a5565b6040516102449190612bab565b3480156106a057600080fd5b506102116106af3660046128c8565b61253b565b6106bc612576565b8160025481106106e75760405162461bcd60e51b81526004016106de90612c73565b60405180910390fd5b8260008060008381526005602052604090206008015460ff1660038111156107115761071161273d565b1461072e5760405162461bcd60e51b81526004016106de90612ca2565b66038d7ea4c6800034101561077a5760405162461bcd60e51b815260206004820152601260248201527142657420616d6f756e7420746f6f206c6f7760701b60448201526064016106de565b6000858152600560205260409020600381015442106107db5760405162461bcd60e51b815260206004820152601860248201527f42657474696e6720706572696f642068617320656e646564000000000000000060448201526064016106de565b60008560018111156107ef576107ef61273d565b0361081357348160060160008282546108089190612ce7565b9091555061082d9050565b348160070160008282546108279190612ce7565b90915550505b6040805160c08101825287815233602082015260009181018760018111156108575761085761273d565b81523460208083019190915242604080840191909152600060609093018390528a83526006825280832033845282528083208054600180820183559185529383902085516005909502019384559184015183830180546001600160a01b031981166001600160a01b0390931692831782559286015195965086959390926001600160a81b03191690911790600160a01b9084908111156108f9576108f961273d565b0217905550606082015160028201556080820151600382015560a0909101516004909101805460ff1916911515919091179055600a8201805490600061093e83612cfa565b9091555050600087815260096020908152604080832033845290915290205460ff166109b75760008781526008602090815260408083208054600181810183559185528385200180546001600160a01b031916339081179091558b855260098452828520908552909252909120805460ff191690911790555b336000908152600b602090815260408083208a845290915290205460ff16610a1c57336000818152600a60209081526040808320805460018181018355918552838520018c9055938352600b82528083208b84529091529020805460ff191690911790555b336001600160a01b0316877f66624be75b2562d9321b51d45b928f6347ddf4a3f5ac9899d59b94835aa12c06883442604051610a5a93929190612d13565b60405180910390a35050505050610a716001600055565b5050565b600080826002548110610a9a5760405162461bcd60e51b81526004016106de90612c73565b600084815260056020526040812060078101546006820154919291610abf9190612ce7565b905080600003610ad85761271080945094505050610b4d565b8160060154600003610af35760001994506127109350610b4a565b8160070154600003610b0e5761271094506000199350610b4a565b6006820154610b1f82612710612d32565b610b299190612d49565b6007830154909550610b3d82612710612d32565b610b479190612d49565b93505b50505b50915091565b610b5b6125a0565b6103e8811115610ba55760405162461bcd60e51b81526020600482015260156024820152744665652063616e6e6f74206578636565642031302560581b60448201526064016106de565b600380549082905560408051828152602081018490527fd347e206f25a89b917fc9482f1a2d294d749baa4dc9bde7fb495ee11fe491643910160405180910390a15050565b60066020528260005260406000206020528160005260406000208181548110610c1257600080fd5b6000918252602090912060059091020180546001820154600283015460038401546004909401549296506001600160a01b038216955060ff600160a01b9092048216945092911686565b6060816002548110610c805760405162461bcd60e51b81526004016106de90612c73565b6000838152600c6020908152604080832080548251818502810185019093528083529193909284015b82821015610cfa57600084815260209081902060408051606081018252600386029092018054835260018082015460ff16151584860152600290910154918301919091529083529092019101610ca9565b5050505091505b50919050565b600c6020528160005260406000208181548110610d2357600080fd5b600091825260209091206003909102018054600182015460029092015490935060ff909116915083565b60008281526006602090815260408083206001600160a01b03851684528252808320805482518185028101850190935280835260609492939192909184015b82821015610e3a5760008481526020908190206040805160c08101825260058602909201805483526001808201546001600160a01b038116958501959095529293909291840191600160a01b90910460ff1690811115610dee57610dee61273d565b6001811115610dff57610dff61273d565b815260028201546020808301919091526003830154604083015260049092015460ff1615156060909101529082526001929092019101610d8c565b5050505090505b92915050565b6001600160a01b0381166000908152600a6020908152604091829020805483518184028101840190945280845260609392830182828015610ea757602002820191906000526020600020905b815481526020019060010190808311610e93575b50505050509050919050565b600081815260086020908152604091829020805483518184028101840190945280845260609392830182828015610ea757602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610ef55750505050509050919050565b600080846002548110610f435760405162461bcd60e51b81526004016106de90612c73565b6000868152600560205260408120600681015460078201549192909190886001811115610f7257610f7261273d565b03610f8857610f818783612ce7565b9150610f95565b610f928782612ce7565b90505b6000610fa18284612ce7565b90506000808a6001811115610fb857610fb861273d565b14610fc35782610fc5565b835b905080610fd2838b612d32565b610fdc9190612d49565b975060006127106003548a610ff19190612d32565b610ffb9190612d49565b9050611007818a612d6b565b975050505050505050935093915050565b6110206125a0565b6001600160a01b03811661106f5760405162461bcd60e51b8152602060048201526016602482015275496e76616c6964206f7261636c65206164647265737360501b60448201526064016106de565b600480546001600160a01b038381166001600160a01b0319831681179093556040519116919082907fd3afd1676752459d3aa8b6f73633fac8efd724610da9c4cd8d8e4fa1631841fb90600090a35050565b600860205281600052604060002081815481106110dd57600080fd5b6000918252602090912001546001600160a01b03169150829050565b611101612576565b8060025481106111235760405162461bcd60e51b81526004016106de90612c73565b8160038060008381526005602052604090206008015460ff16600381111561114d5761114d61273d565b1461116a5760405162461bcd60e51b81526004016106de90612ca2565b6000848152600660209081526040808320338452909152902080546111d15760405162461bcd60e51b815260206004820152601d60248201527f4e6f206269647320666f756e6420666f722074686973206d61726b657400000060448201526064016106de565b6000805b8254811015611285578281815481106111f0576111f0612d7e565b600091825260209091206004600590920201015460ff166112735782818154811061121d5761121d612d7e565b9060005260206000209060050201600201548261123a9190612ce7565b9150600183828154811061125057611250612d7e565b60009182526020909120600590910201600401805460ff19169115159190911790555b8061127d81612cfa565b9150506111d5565b50600081116112cc5760405162461bcd60e51b81526020600482015260136024820152724e6f20726566756e6420617661696c61626c6560681b60448201526064016106de565b604051600090339083908381818185875af1925050503d806000811461130e576040519150601f19603f3d011682016040523d82523d6000602084013e611313565b606091505b505090508061135d5760405162461bcd60e51b81526020600482015260166024820152751499599d5b99081d1c985b9cd9995c8819985a5b195960521b60448201526064016106de565b50505050505061136d6001600055565b50565b6004546001600160a01b031633146113c65760405162461bcd60e51b81526020600482015260196024820152784f6e6c79206f7261636c652063616e2063616c6c207468697360381b60448201526064016106de565b8160025481106113e85760405162461bcd60e51b81526004016106de90612c73565b8260018060008381526005602052604090206008015460ff1660038111156114125761141261273d565b1461142f5760405162461bcd60e51b81526004016106de90612ca2565b6127108411156114815760405162461bcd60e51b815260206004820152601960248201527f496e76616c696420757074696d652070657263656e746167650000000000000060448201526064016106de565b6000858152600560209081526040918290206009810187905560088101805460ff196101006126ac8b101581029190911661ffff1990921691909117600217918290556006830154600784015486519290930460ff16151582529381018990529384019290925260608301919091529086907f71b668670f5341cfcc8094e91b9c6beeb06cbc13cd608aa869b673d843fed0a99060800160405180910390a2857fdfacc4492524300f7487a619cdb7ab99bab5b5518d5ccec25d2bc8b35bd4aa3960016002604051611554929190612d94565b60405180910390a2505050505050565b61156c612576565b80600254811061158e5760405162461bcd60e51b81526004016106de90612c73565b8160028060008381526005602052604090206008015460ff1660038111156115b8576115b861273d565b146115d55760405162461bcd60e51b81526004016106de90612ca2565b60008481526005602090815260408083206006835281842033855290925290912080546116445760405162461bcd60e51b815260206004820152601d60248201527f4e6f206269647320666f756e6420666f722074686973206d61726b657400000060448201526064016106de565b60008060005b83548110156117c25783818154811061166557611665612d7e565b600091825260209091206004600590920201015460ff166117b0576008850154600090610100900460ff1680156116dd575060008583815481106116ab576116ab612d7e565b906000526020600020906005020160010160149054906101000a900460ff1660018111156116db576116db61273d565b145b8061173e57506008860154610100900460ff1615801561173e5750600185838154811061170c5761170c612d7e565b906000526020600020906005020160010160149054906101000a900460ff16600181111561173c5761173c61273d565b145b905080156117785784828154811061175857611758612d7e565b906000526020600020906005020160020154836117759190612ce7565b92505b600185838154811061178c5761178c612d7e565b60009182526020909120600590910201600401805460ff1916911515919091179055505b806117ba81612cfa565b91505061164a565b50600081116118135760405162461bcd60e51b815260206004820152601860248201527f4e6f2077696e6e696e67206265747320746f20636c61696d000000000000000060448201526064016106de565b6000846007015485600601546118299190612ce7565b6008860154909150600090610100900460ff1661184a578560070154611850565b85600601545b90508061185d8385612d32565b6118679190612d49565b935060006127106003548661187c9190612d32565b6118869190612d49565b905060006118948287612d6b565b9050600081116118df5760405162461bcd60e51b81526020600482015260166024820152754e6f2077696e6e696e6773206166746572206665657360501b60448201526064016106de565b604051600090339083908381818185875af1925050503d8060008114611921576040519150601f19603f3d011682016040523d82523d6000602084013e611926565b606091505b50509050806119695760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016106de565b8215611a1b5760006119836001546001600160a01b031690565b6001600160a01b03168460405160006040518083038185875af1925050503d80600081146119cd576040519150601f19603f3d011682016040523d82523d6000602084013e6119d2565b606091505b5050905080611a195760405162461bcd60e51b8152602060048201526013602482015272119959481d1c985b9cd9995c8819985a5b1959606a1b60448201526064016106de565b505b604080518381526020810185905233918f917f6256309dc4c6375473b26b31fc0e88b0ca9ebca0e558d39fec5aa96863ad40cb910160405180910390a350505050505050505050505061136d6001600055565b611a766125a0565b611a8060006125cd565b565b611a8a6125a0565b806002548110611aac5760405162461bcd60e51b81526004016106de90612c73565b60008281526005602052604090206002600882015460ff166003811115611ad557611ad561273d565b03611b225760405162461bcd60e51b815260206004820152601d60248201527f43616e6e6f742063616e63656c207265736f6c766564206d61726b657400000060448201526064016106de565b6003600882015460ff166003811115611b3d57611b3d61273d565b03611b8a5760405162461bcd60e51b815260206004820152601860248201527f4d61726b657420616c72656164792063616e63656c6c6564000000000000000060448201526064016106de565b60088101805460ff81169160039160ff19166001830217905550837fdfacc4492524300f7487a619cdb7ab99bab5b5518d5ccec25d2bc8b35bd4aa39826003604051611bd7929190612d94565b60405180910390a250505050565b6004546001600160a01b03163314611c3b5760405162461bcd60e51b81526020600482015260196024820152784f6e6c79206f7261636c652063616e2063616c6c207468697360381b60448201526064016106de565b826002548110611c5d5760405162461bcd60e51b81526004016106de90612c73565b600084815260056020526040812090600882015460ff166003811115611c8557611c8561273d565b1480611ca957506001600882015460ff166003811115611ca757611ca761273d565b145b611ce95760405162461bcd60e51b81526020600482015260116024820152704d61726b6574206e6f742061637469766560781b60448201526064016106de565b8060040154421115611d3d5760405162461bcd60e51b815260206004820152601b60248201527f4d6f6e69746f72696e6720706572696f642068617320656e646564000000000060448201526064016106de565b60408051606080820183524280835287151560208085018281528587018a815260008d8152600c84528881208054600180820183559183529185902089516003909302019182559251928101805460ff191693151593909317909255516002909101558551928352820152928301869052909187917f7e545de76c61d950ea7321ebcfa64fe06437a42c85609c2d78e6a1660b3512929101611554565b806002548110611dfc5760405162461bcd60e51b81526004016106de90612c73565b8160008060008381526005602052604090206008015460ff166003811115611e2657611e2661273d565b14611e435760405162461bcd60e51b81526004016106de90612ca2565b60008481526005602052604090206003810154421015611ea55760405162461bcd60e51b815260206004820152601c60248201527f42657474696e6720706572696f64206e6f7420656e646564207965740000000060448201526064016106de565b60088101805460ff81169160019160ff191682800217905550857fdfacc4492524300f7487a619cdb7ab99bab5b5518d5ccec25d2bc8b35bd4aa39826001604051611554929190612d94565b600a6020528160005260406000208181548110611f0d57600080fd5b90600052602060002001600091509150505481565b60056020526000908152604090208054600182018054919291611f4490612daf565b80601f0160208091040260200160405190810160405280929190818152602001828054611f7090612daf565b8015611fbd5780601f10611f9257610100808354040283529160200191611fbd565b820191906000526020600020905b815481529060010190602001808311611fa057829003601f168201915b50505060028401546003850154600486015460058701546006880154600789015460088a015460098b0154600a8c0154600b909c01549a9b979a96995094975092959194909360ff808516946101009004169290916001600160a01b03168d565b6000808451116120705760405162461bcd60e51b815260206004820152601b60248201527f576562736974652055524c2063616e6e6f7420626520656d707479000000000060448201526064016106de565b603c8310156120d45760405162461bcd60e51b815260206004820152602a60248201527f42657474696e67206475726174696f6e206d757374206265206174206c656173604482015269742031206d696e75746560b01b60648201526084016106de565b62093a808311156121355760405162461bcd60e51b815260206004820152602560248201527f42657474696e67206475726174696f6e2063616e6e6f74206578636565642037604482015264206461797360d81b60648201526084016106de565b603c82101561219c5760405162461bcd60e51b815260206004820152602d60248201527f4d6f6e69746f72696e67206475726174696f6e206d757374206265206174206c60448201526c656173742031206d696e75746560981b60648201526084016106de565b62278d008211156122015760405162461bcd60e51b815260206004820152602960248201527f4d6f6e69746f72696e67206475726174696f6e2063616e6e6f7420657863656560448201526864203330206461797360b81b60648201526084016106de565b600280546000918261221283612cfa565b9091555090504260006122258683612ce7565b905060006122338683612ce7565b905060006122438261012c612ce7565b6000868152600560205260409020868155909150600181016122658b82612e32565b506002810185905560038101849055600481018390556005810182905560088101805460ff19169055600b810180546001600160a01b0319163390811790915560405187917f6b68a2fc85527405d93824f9ea03022f60f50735f43c2bf600582af1824f5006916122df918e918a918a918a918a91612ef2565b60405180910390a250939450505050505b9392505050565b6122ff6125a0565b60006123136001546001600160a01b031690565b6001600160a01b03164760405160006040518083038185875af1925050503d806000811461235d576040519150601f19603f3d011682016040523d82523d6000602084013e612362565b606091505b505090508061136d5760405162461bcd60e51b815260206004820152600f60248201526e15da5d1a191c985dc819985a5b1959608a1b60448201526064016106de565b6123ad61261f565b8160025481106123cf5760405162461bcd60e51b81526004016106de90612c73565b60056000848152602001908152602001600020604051806101a00160405290816000820154815260200160018201805461240890612daf565b80601f016020809104026020016040519081016040528092919081815260200182805461243490612daf565b80156124815780601f1061245657610100808354040283529160200191612481565b820191906000526020600020905b81548152906001019060200180831161246457829003601f168201915b50505091835250506002820154602082015260038083015460408301526004830154606083015260058301546080830152600683015460a0830152600783015460c0830152600883015460e09092019160ff16908111156124e4576124e461273d565b60038111156124f5576124f561273d565b81526008820154610100900460ff161515602082015260098201546040820152600a8201546060820152600b909101546001600160a01b03166080909101529392505050565b6125436125a0565b6001600160a01b03811661256d57604051631e4fbdf760e01b8152600060048201526024016106de565b61136d816125cd565b60026000540361259957604051633ee5aeb560e01b815260040160405180910390fd5b6002600055565b6001546001600160a01b03163314611a805760405163118cdaa760e01b81523360048201526024016106de565b600180546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b604051806101a001604052806000815260200160608152602001600081526020016000815260200160008152602001600081526020016000815260200160008152602001600060038111156126765761267661273d565b8152600060208201819052604082018190526060820181905260809091015290565b8035600281106126a757600080fd5b919050565b600080604083850312156126bf57600080fd5b823591506126cf60208401612698565b90509250929050565b6000602082840312156126ea57600080fd5b5035919050565b80356001600160a01b03811681146126a757600080fd5b60008060006060848603121561271d57600080fd5b8335925061272d602085016126f1565b9150604084013590509250925092565b634e487b7160e01b600052602160045260246000fd5b600281106127635761276361273d565b9052565b8681526001600160a01b038616602082015260c0810161278a6040830187612753565b84606083015283608083015282151560a0830152979650505050505050565b602080825282518282018190526000919060409081850190868401855b828110156127f7578151805185528681015115158786015285015185850152606090930192908501906001016127c6565b5091979650505050505050565b6000806040838503121561281757600080fd5b50508035926020909101359150565b6000806040838503121561283957600080fd5b823591506126cf602084016126f1565b602080825282518282018190526000919060409081850190868401855b828110156127f757815180518552868101516001600160a01b0316878601528581015161289587870182612753565b50606081810151908601526080808201519086015260a09081015115159085015260c09093019290850190600101612866565b6000602082840312156128da57600080fd5b6122f0826126f1565b6020808252825182820181905260009190848201906040850190845b8181101561291b578351835292840192918401916001016128ff565b50909695505050505050565b6020808252825182820181905260009190848201906040850190845b8181101561291b5783516001600160a01b031683529284019291840191600101612943565b60008060006060848603121561297d57600080fd5b8335925061272d60208501612698565b6000806000606084860312156129a257600080fd5b83359250602084013580151581146129b957600080fd5b929592945050506040919091013590565b600080604083850312156129dd57600080fd5b6129e6836126f1565b946020939093013593505050565b6000815180845260005b81811015612a1a576020818501810151868301820152016129fe565b506000602082860101526020601f19601f83011685010191505092915050565b600481106127635761276361273d565b8d81526101a060208201526000612a656101a083018f6129f4565b90508c60408301528b60608301528a60808301528960a08301528860c08301528760e0830152612a99610100830188612a3a565b9415156101208201526101408101939093526101608301919091526001600160a01b0316610180909101529998505050505050505050565b634e487b7160e01b600052604160045260246000fd5b600080600060608486031215612afc57600080fd5b833567ffffffffffffffff80821115612b1457600080fd5b818601915086601f830112612b2857600080fd5b813581811115612b3a57612b3a612ad1565b604051601f8201601f19908116603f01168101908382118183101715612b6257612b62612ad1565b81604052828152896020848701011115612b7b57600080fd5b82602086016020830137600060208483010152809750505050505060208401359150604084013590509250925092565b6020815281516020820152600060208301516101a0806040850152612bd46101c08501836129f4565b91506040850151606085015260608501516080850152608085015160a085015260a085015160c085015260c085015160e085015260e0850151610100818187015280870151915050610120612c2b81870183612a3a565b8601519050610140612c408682018315159052565b8601516101608681019190915286015161018080870191909152909501516001600160a01b031693019290925250919050565b60208082526015908201527413585c9ad95d08191bd95cc81b9bdd08195e1a5cdd605a1b604082015260600190565b602080825260159082015274496e76616c6964206d61726b65742073746174757360581b604082015260600190565b634e487b7160e01b600052601160045260246000fd5b80820180821115610e4157610e41612cd1565b600060018201612d0c57612d0c612cd1565b5060010190565b60608101612d218286612753565b602082019390935260400152919050565b8082028115828204841417610e4157610e41612cd1565b600082612d6657634e487b7160e01b600052601260045260246000fd5b500490565b81810381811115610e4157610e41612cd1565b634e487b7160e01b600052603260045260246000fd5b60408101612da28285612a3a565b6122f06020830184612a3a565b600181811c90821680612dc357607f821691505b602082108103610d0157634e487b7160e01b600052602260045260246000fd5b601f821115612e2d57600081815260208120601f850160051c81016020861015612e0a5750805b601f850160051c820191505b81811015612e2957828155600101612e16565b5050505b505050565b815167ffffffffffffffff811115612e4c57612e4c612ad1565b612e6081612e5a8454612daf565b84612de3565b602080601f831160018114612e955760008415612e7d5750858301515b600019600386901b1c1916600185901b178555612e29565b600085815260208120601f198616915b82811015612ec457888601518255948401946001909101908401612ea5565b5085821015612ee25787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b60c081526000612f0560c08301896129f4565b6020830197909752506040810194909452606084019290925260808301526001600160a01b031660a09091015291905056fea26469706673582212202f75066d3bafa49dc80da13b2c017d1cab4cfa50daa694f073f18cbd2484aa6e64736f6c63430008140033",
+  "devdoc": {
+    "details": "Uses pool-based betting with dynamic odds calculation",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ],
+      "ReentrancyGuardReentrantCall()": [
+        {
+          "details": "Unauthorized reentrant call."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "addUptimeCheck(uint256,bool,uint256)": {
+        "params": {
+          "_isUp": "Whether the site was up",
+          "_marketId": "The ID of the market",
+          "_responseTime": "Response time in milliseconds"
+        }
+      },
+      "cancelMarket(uint256)": {
+        "params": {
+          "_marketId": "The ID of the market"
+        }
+      },
+      "claimRefund(uint256)": {
+        "params": {
+          "_marketId": "The ID of the market"
+        }
+      },
+      "claimWinnings(uint256)": {
+        "params": {
+          "_marketId": "The ID of the market"
+        }
+      },
+      "closeMarket(uint256)": {
+        "params": {
+          "_marketId": "The ID of the market"
+        }
+      },
+      "createMarket(string,uint256,uint256)": {
+        "params": {
+          "_bettingDuration": "Duration in seconds for betting period",
+          "_monitoringDuration": "Duration in seconds for monitoring period",
+          "_websiteUrl": "The URL of the website to monitor"
+        }
+      },
+      "getOdds(uint256)": {
+        "returns": {
+          "noOdds": "Payout multiplier for NO (in basis points)",
+          "yesOdds": "Payout multiplier for YES (in basis points)"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "placeBid(uint256,uint8)": {
+        "params": {
+          "_marketId": "The ID of the market",
+          "_position": "YES or NO position"
+        }
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "resolveMarket(uint256,uint256)": {
+        "params": {
+          "_marketId": "The ID of the market",
+          "_uptimePercentage": "The uptime percentage in basis points"
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "UptimeMarket",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "addUptimeCheck(uint256,bool,uint256)": {
+        "notice": "Add an uptime check data point (called by oracle during monitoring)"
+      },
+      "calculatePotentialWinnings(uint256,uint8,uint256)": {
+        "notice": "Calculate potential winnings for a bet amount"
+      },
+      "cancelMarket(uint256)": {
+        "notice": "Cancel a market and allow refunds (emergency use)"
+      },
+      "claimRefund(uint256)": {
+        "notice": "Claim refund from a cancelled market"
+      },
+      "claimWinnings(uint256)": {
+        "notice": "Claim winnings from a resolved market"
+      },
+      "closeMarket(uint256)": {
+        "notice": "Close betting period and move to monitoring"
+      },
+      "createMarket(string,uint256,uint256)": {
+        "notice": "Create a new uptime prediction market"
+      },
+      "emergencyWithdraw()": {
+        "notice": "Emergency withdraw (only for stuck funds in edge cases)"
+      },
+      "getMarket(uint256)": {
+        "notice": "Get market details"
+      },
+      "getMarketBidders(uint256)": {
+        "notice": "Get all bidders for a market"
+      },
+      "getOdds(uint256)": {
+        "notice": "Get current odds for a market"
+      },
+      "getTotalMarkets()": {
+        "notice": "Get total number of markets"
+      },
+      "getUptimeChecks(uint256)": {
+        "notice": "Get uptime checks for a market"
+      },
+      "getUserBids(uint256,address)": {
+        "notice": "Get user's bids for a market"
+      },
+      "getUserParticipatedMarkets(address)": {
+        "notice": "Get markets a user has participated in"
+      },
+      "placeBid(uint256,uint8)": {
+        "notice": "Place a bet on a market"
+      },
+      "resolveMarket(uint256,uint256)": {
+        "notice": "Resolve a market (called by oracle)"
+      },
+      "setOracleAddress(address)": {
+        "notice": "Set the oracle address"
+      },
+      "setPlatformFee(uint256)": {
+        "notice": "Update platform fee percentage"
+      }
+    },
+    "notice": "A prediction market for website uptime - users can bet YES (site stays up) or NO (site goes down)",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 188,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "_status",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 8,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 314,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "marketCounter",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 317,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "platformFeePercentage",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 325,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "oracleAddress",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_address"
+      },
+      {
+        "astId": 330,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "markets",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_uint256,t_struct(Market)291_storage)"
+      },
+      {
+        "astId": 338,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "userBids",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_mapping(t_uint256,t_mapping(t_address,t_array(t_struct(Bid)312_storage)dyn_storage))"
+      },
+      {
+        "astId": 342,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "hasUserBid",
+        "offset": 0,
+        "slot": "7",
+        "type": "t_mapping(t_uint256,t_bool)"
+      },
+      {
+        "astId": 347,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "marketBidders",
+        "offset": 0,
+        "slot": "8",
+        "type": "t_mapping(t_uint256,t_array(t_address)dyn_storage)"
+      },
+      {
+        "astId": 353,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "isMarketBidder",
+        "offset": 0,
+        "slot": "9",
+        "type": "t_mapping(t_uint256,t_mapping(t_address,t_bool))"
+      },
+      {
+        "astId": 358,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "userParticipatedMarkets",
+        "offset": 0,
+        "slot": "10",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 364,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "hasParticipated",
+        "offset": 0,
+        "slot": "11",
+        "type": "t_mapping(t_address,t_mapping(t_uint256,t_bool))"
+      },
+      {
+        "astId": 370,
+        "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+        "label": "marketUptimeChecks",
+        "offset": 0,
+        "slot": "12",
+        "type": "t_mapping(t_uint256,t_array(t_struct(UptimeCheck)298_storage)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "base": "t_address",
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32"
+      },
+      "t_array(t_struct(Bid)312_storage)dyn_storage": {
+        "base": "t_struct(Bid)312_storage",
+        "encoding": "dynamic_array",
+        "label": "struct UptimeMarket.Bid[]",
+        "numberOfBytes": "32"
+      },
+      "t_array(t_struct(UptimeCheck)298_storage)dyn_storage": {
+        "base": "t_struct(UptimeCheck)298_storage",
+        "encoding": "dynamic_array",
+        "label": "struct UptimeMarket.UptimeCheck[]",
+        "numberOfBytes": "32"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_enum(MarketStatus)260": {
+        "encoding": "inplace",
+        "label": "enum UptimeMarket.MarketStatus",
+        "numberOfBytes": "1"
+      },
+      "t_enum(Position)263": {
+        "encoding": "inplace",
+        "label": "enum UptimeMarket.Position",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_struct(Bid)312_storage)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct UptimeMarket.Bid[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_struct(Bid)312_storage)dyn_storage"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_address,t_mapping(t_uint256,t_bool))": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => mapping(uint256 => bool))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_uint256,t_bool)"
+      },
+      "t_mapping(t_uint256,t_array(t_address)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => address[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_address)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_array(t_struct(UptimeCheck)298_storage)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct UptimeMarket.UptimeCheck[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_struct(UptimeCheck)298_storage)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_uint256,t_mapping(t_address,t_array(t_struct(Bid)312_storage)dyn_storage))": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => mapping(address => struct UptimeMarket.Bid[]))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_address,t_array(t_struct(Bid)312_storage)dyn_storage)"
+      },
+      "t_mapping(t_uint256,t_mapping(t_address,t_bool))": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => mapping(address => bool))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_address,t_bool)"
+      },
+      "t_mapping(t_uint256,t_struct(Market)291_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct UptimeMarket.Market)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Market)291_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Bid)312_storage": {
+        "encoding": "inplace",
+        "label": "struct UptimeMarket.Bid",
+        "members": [
+          {
+            "astId": 300,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "marketId",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 302,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "bidder",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 305,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "position",
+            "offset": 20,
+            "slot": "1",
+            "type": "t_enum(Position)263"
+          },
+          {
+            "astId": 307,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "amount",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 309,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "timestamp",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 311,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "claimed",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "160"
+      },
+      "t_struct(Market)291_storage": {
+        "encoding": "inplace",
+        "label": "struct UptimeMarket.Market",
+        "members": [
+          {
+            "astId": 265,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "id",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 267,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "websiteUrl",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 269,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "startTime",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 271,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "bettingEndTime",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 273,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "monitoringEndTime",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 275,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "resolutionTime",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 277,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "yesPool",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 279,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "noPool",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 282,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "status",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_enum(MarketStatus)260"
+          },
+          {
+            "astId": 284,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "outcome",
+            "offset": 1,
+            "slot": "8",
+            "type": "t_bool"
+          },
+          {
+            "astId": 286,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "uptimePercentage",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 288,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "totalBids",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 290,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "creator",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address"
+          }
+        ],
+        "numberOfBytes": "384"
+      },
+      "t_struct(UptimeCheck)298_storage": {
+        "encoding": "inplace",
+        "label": "struct UptimeMarket.UptimeCheck",
+        "members": [
+          {
+            "astId": 293,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "timestamp",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 295,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "isUp",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_bool"
+          },
+          {
+            "astId": 297,
+            "contract": "contracts/UptimeMarket.sol:UptimeMarket",
+            "label": "responseTime",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
